@@ -1,0 +1,11 @@
+@font-face {
+	font-family:			OpenSansL;
+	src:					url(../font/OpenSans-Light.ttf);
+}
+
+body {
+	font-family:			OpenSansL,'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size:				16px;
+	color:					#31393f;
+	background-color:		#0f1a21;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "BOA",
+  "author": "Moe Szyslack <moe.duffdude@gmail.com>",
+  "description": "Network Reporting for BOA",
+  "version": "0.0.1",
+  "repository": "https://github.com/moeduffdude/boa",
+  "main": "app.js",
+  "dependencies": {
+    "connect": "latest",
+    "pg": "latest",
+    "cookie": "latest"
+  },
+
+  "engines": {
+    "node": "0.10.*",
+    "npm": "latest"
+  }
+}
