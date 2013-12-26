@@ -102,7 +102,726 @@ var server = http.createServer (app).listen (port, function () {
 
 												// this is where the branches are added for the first time
 												else {
-													
+													var B_INIT = [
+														{
+															branch_name: 	"Welkite",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000000,
+															ip_address:		"10.10.98.0"
+														},
+
+														{
+															branch_name: 	"Combolcha",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.96.0"
+														},
+
+														{
+															branch_name: 	"Shire",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.94.0"
+														},
+
+														{
+															branch_name: 	"Togo Chale",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.95.0"
+														},
+
+														{
+															branch_name: 	"Kotobe",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.140.0"
+														},
+
+														{
+															branch_name: 	"Metema",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.92.0"
+														},
+
+														{
+															branch_name: 	"Jomo",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.91.0"
+														},
+
+														{
+															branch_name: 	"Bethel",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.111.0"
+														},
+
+														{
+															branch_name: 	"Autobis Tera",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.89.0"
+														},
+
+														{
+															branch_name: 	"Debre Markos",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009275,
+															ip_address:		"10.10.58.192"
+														},
+
+														{
+															branch_name: 	"Temejayaj",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		00000000,
+															ip_address:		"10.10.61.0"
+														},
+
+														{
+															branch_name: 	"Sidist killo",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009283,
+															ip_address:		"10.10.61.192"
+														},
+
+														{
+															branch_name: 	"Sarbet",
+															service_type:	"Internet",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990008927,
+															ip_address:		"10.10.55.64"
+														},
+
+														{
+															branch_name: 	"Raguel",
+															service_type:	"DATA",
+															speed:			"2Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009257,
+															ip_address:		"10.10.55.192"
+														},
+
+														{
+															branch_name: 	"legehar",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990006026,
+															ip_address:		"10.10.62.0"
+														},
+
+														{
+															branch_name: 	"Abba Koran",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990006664,
+															ip_address:		"10.10.53.64"
+														},
+
+														{
+															branch_name: 	"kazanchis",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"ADSL",
+															service_no:		00000000,
+															ip_address:		"10.10.62.64"
+														},
+
+														{
+															branch_name: 	"Goffa",
+															service_type:	"Internet",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990008937,
+															ip_address:		"10.10.52.128"
+														},
+
+														{
+															branch_name: 	"Debebe H/Yohannes",
+															service_type:	"Internet",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990008938,
+															ip_address:		"10.10.61.128"
+														},
+
+														{
+															branch_name: 	"Chirchil Road",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009285,
+															ip_address:		"10.10.56.64"
+														},
+
+														{
+															branch_name: 	"Arada",
+															service_type:	"Internet",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990008933,
+															ip_address:		"10.10.52.64"
+														},
+
+														{
+															branch_name: 	"Abinet",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		0000000,
+															ip_address:		"10.10.55.128"
+														},
+
+														{
+															branch_name: 	"Lafto (HanaMariam)",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009264,
+															ip_address:		"10.10.61.64"
+														},
+
+														{
+															branch_name: 	"Aksum",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.139.0"
+														},
+
+														{
+															branch_name: 	"Bure",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.138.0"
+														},
+
+														{
+															branch_name: 	"Fasil Ledes",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.137.0"
+														},
+
+														{
+															branch_name: 	"Adigrat",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.135.0"
+														},
+
+														{
+															branch_name: 	"Airport",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.134.0"
+														},
+
+														{
+															branch_name: 	"Urael",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.133.0"
+														},
+
+														{
+															branch_name: 	"Bambis",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990021781,
+															ip_address:		"10.10.131.0"
+														},
+
+														{
+															branch_name: 	"Bishoftu",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990017765,
+															ip_address:		"10.10.130.0"
+														},
+
+														{
+															branch_name: 	"Gerji",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990006024,
+															ip_address:		"10.10.129.0"
+														},
+
+														{
+															branch_name: 	"Megenagna",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990018661,
+															ip_address:		"10.10.128.0"
+														},
+
+														{
+															branch_name: 	"Jijjga",
+															service_type:	"DATA",
+															speed:			"511kbps",
+															access_type:	"ADSL",
+															service_no:		9990020317,
+															ip_address:		"10.10.127.0"
+														},
+
+														{
+															branch_name: 	"Gotera",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990017766,
+															ip_address:		"10.10.122.0"
+														},
+
+														{
+															branch_name: 	"Modjo",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009267,
+															ip_address:		"10.10.123.0"
+														},
+
+														{
+															branch_name: 	"Dessie",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009274,
+															ip_address:		"10.10.122.0"
+														},
+
+														{
+															branch_name: 	"Gullele",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990015231,
+															ip_address:		"10.10.121.0"
+														},
+
+														{
+															branch_name: 	"Merkato",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990016413,
+															ip_address:		"10.10.120.0"
+														},
+
+														{
+															branch_name: 	"Guenet",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.117.0"
+														},
+
+														{
+															branch_name: 	"Tabor",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009258,
+															ip_address:		"10.10.116.0"
+														},
+
+														{
+															branch_name: 	"Hosanna",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990014562,
+															ip_address:		"10.10.114.0"
+														},
+
+														{
+															branch_name: 	"Nazareth Arada",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990014790,
+															ip_address:		"10.10.113.0"
+														},
+
+														{
+															branch_name: 	"Dire Dawa",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.110.0"
+														},
+
+														{
+															branch_name: 	"Finote Selam",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990014945,
+															ip_address:		"10.10.108.0"
+														},
+
+														{
+															branch_name: 	"Arba Minch",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009280,
+															ip_address:		"10.10.107.0"
+														},
+
+														{
+															branch_name: 	"Shashemene",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009263,
+															ip_address:		"10.10.106.0"
+														},
+
+														{
+															branch_name: 	"Adama Menaharia",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009282,
+															ip_address:		"10.10.105.0"
+														},
+
+														{
+															branch_name: 	"Bule Hora",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990014561,
+															ip_address:		"10.10.103.0"
+														},
+
+														{
+															branch_name: 	"Tewedros",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009262,
+															ip_address:		"10.10.102.0"
+														},
+
+														{
+															branch_name: 	"Welayta Soddo",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.101.0"
+														},
+
+														{
+															branch_name: 	"CMC",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990017764,
+															ip_address:		"10.10.100.0"
+														},
+
+														{
+															branch_name: 	"Chiro",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009276,
+															ip_address:		"10.10.99.0"
+														},
+
+														{
+															branch_name: 	"Bomb Tera",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990012525,
+															ip_address:		"10.10.97.0"
+														},
+
+														{
+															branch_name: 	"Assela",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.93.0"
+														},
+
+														{
+															branch_name: 	"AU (Africa Union)",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.87.0"
+														},
+
+														{
+															branch_name: 	"Humera",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009270,
+															ip_address:		"10.10.86.0"
+														},
+
+														{
+															branch_name: 	"Lamberet",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990014558,
+															ip_address:		"10.10.84.0"
+														},
+
+														{
+															branch_name: 	"Atse Zera'ayacob",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009279,
+															ip_address:		"10.10.83.0"
+														},
+
+														{
+															branch_name: 	"US Embassy",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990006663,
+															ip_address:		"10.10.80.0"
+														},
+
+														{
+															branch_name: 	"Adi Haki",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009281,
+															ip_address:		"10.10.79.0"
+														},
+
+														{
+															branch_name: 	"Dilla",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009273,
+															ip_address:		"10.10.78.0"
+														},
+
+														{
+															branch_name: 	"Chagni (Gangaye)",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009278,
+															ip_address:		"10.10.77.0"
+														},
+
+														{
+															branch_name: 	"Harar",
+															service_type:	"?",
+															speed:			"?",
+															access_type:	"?",
+															service_no:		000000,
+															ip_address:		"10.10.76.0"
+														},
+
+														{
+															branch_name: 	"Debre Tabor",
+															service_type:	"DATA",
+															speed:			"3Mbps",
+															access_type:	"Fiber",
+															service_no:		9990014791,
+															ip_address:		"10.10.75.0"
+														},
+
+														{
+															branch_name: 	"Teppi",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009259,
+															ip_address:		"10.10.74.0"
+														},
+
+														{
+															branch_name: 	"Jimma",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009268,
+															ip_address:		"10.10.73.0"
+														},
+
+														{
+															branch_name: 	"Motta",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990009265,
+															ip_address:		"10.10.71.0"
+														},
+
+														{
+															branch_name: 	"Hawassa",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990004340,
+															ip_address:		"10.10.60.0"
+														},
+
+														{
+															branch_name: 	"Alula Abba Nega",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		990999806,
+															ip_address:		"10.10.59.0"
+														},
+
+														{
+															branch_name: 	"Bahir Dar",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990002783,
+															ip_address:		"10.10.58.0"
+														},
+
+														{
+															branch_name: 	"Negaderas",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		990999732,
+															ip_address:		"10.10.57.0"
+														},
+
+														{
+															branch_name: 	"Addisu Gebeya",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990001861,
+															ip_address:		"10.10.56.0"
+														},
+
+														{
+															branch_name: 	"Kality",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990001424,
+															ip_address:		"10.10.55.0"
+														},
+
+														{
+															branch_name: 	"Alem Gena",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990001268,
+															ip_address:		"10.10.54.0"
+														},
+
+														{
+															branch_name: 	"Abba Mela",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"ADSL",
+															service_no:		9990008934,
+															ip_address:		"10.10.53.0"
+														},
+
+														{
+															branch_name: 	"Olympia",
+															service_type:	"DATA",
+															speed:			"512kbps",
+															access_type:	"ADSL",
+															service_no:		9990008935,
+															ip_address:		"10.10.52.0"
+														},
+
+														{
+															branch_name: 	"Fulwuha",
+															service_type:	"DATA",
+															speed:			"4Mbps",
+															access_type:	"Fiber",
+															service_no:		990999804,
+															ip_address:		"10.10.51.0"
+														},
+
+														{
+															branch_name: 	"Bole",
+															service_type:	"DATA",
+															speed:			"1Mbps",
+															access_type:	"Fiber",
+															service_no:		990999731,
+															ip_address:		"10.10.50.0"
+														}
+													];
+
+													for (var i = 0, l = B_INIT.length; i < l; i++) {
+														pg_client.query ('INSERT INTO branch (branch_name, service_type, speed, access_type, service_no, ip_address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;', [B_INIT[i].branch_name, B_INIT[i].service_type, B_INIT[i].speed, B_INIT[i].access_type, B_INIT[i].service_no, B_INIT[i].ip_address], function (error, result) {
+															if (error) {
+																console.log (error);
+															}
+														});
+													}
 												}
 											});
 										}
