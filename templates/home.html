@@ -1,0 +1,356 @@
+<!-- SETTINGS: START -->
+	<div class="btn-group-vertical pull-right CONFIG">
+		<button type="button" class="btn btn-default" ng-show="current_user.super_duper" onclick="$('#CONFIG').modal();"><i class="glyphicon glyphicon-cog"></i></button>
+		<button type="button" class="btn btn-default" ng-click="logout()"><i class="glyphicon glyphicon-log-out"></i></button>
+	</div>
+<!-- SETTINGS: END -->
+
+
+
+<!-- BRANCHES: START -->
+<div class="col-lg-4 col-md-4 col-sm-4">
+	<div class="row" style="margin-top: 8px; margin-bottom: 8px;">
+		<div class="col-lg-9 col-md-9 col-sm-9">
+			<input type="text" class="form-control" placeholder="Search" ng-model="branch_q" />
+		</div>
+
+		<div class="col-lg-3 col-md-3 col-sm-3">
+			<button type="button" class="btn btn-block btn-default" ng-click="lauch_new_modal()" ng-disabled="!current_user.super_duper">NEW&nbsp;<i class="glyphicon glyphicon-tower"></i></button>
+		</div>
+	</div>
+
+	<div id="BRANCH_LIST" class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="list-group">
+				<div ng-repeat="branch in branch_list | orderBy:'branch_name':false | filter:branch_q:strict" class="list-group-item branch">
+					<h4 class="list-group-item-heading">{{ branch.branch_name }}</h4>
+
+					<div class="list-group-item-text">
+						<p class="ip text-danger">{{ branch.ip_address }}</p>
+						<p class="service_no text-success">{{ branch.service_no }}</p>
+						<p class="info_plus">{{ branch.service_type }} - {{ branch.access_type }} - {{ branch.speed }}</p>
+					</div>
+
+					<div class="overlay">
+						<div class="btn-group-vertical pull-right">
+							<button ng-show="current_user.super_duper" ng-click="edit_b(branch)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></button>
+							<button ng-show="current_user.super_duper" ng-click="delete_b(branch)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+							<button class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-screenshot"></i></button><!-- COMING SOON -->
+							<button ng-click="report_b(branch)" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-pushpin"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- BRANCHES: END -->
+
+
+
+<!-- REPORTS: START -->
+<div class="col-lg-4 col-md-4 col-sm-4">
+	<div class="row" style="margin-top: 8px; margin-bottom: 8px;">
+		<div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-lg-10 col-md-10 col-sm-10">
+			<input type="text" class="form-control" placeholder="Search" ng-model="report_q" />
+		</div>
+	</div>
+
+	<div id="REPORT_LIST" class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="list-group">
+				<div ng-repeat="report in report_list | orderBy:'id':true | filter:report_q:strict" class="list-group-item report" ng-class="color_code (report.status)">
+					<h4 class="list-group-item-heading">{{ report.branch_name }}</h4>
+
+					<div class="list-group-item-text">
+						<p class="ticket_no">{{ report.ticket_no }}</p>
+						<p class="date_reported">{{ report.ts }}</p>
+						<p ng-show="report.status === 'CLOSED'" class="date_reported">{{ report.ts_close }}</p>
+						<p class="reported_by text-right">- {{ report.reported_by }}</p>
+					</div>
+
+					<div class="overlay" ng-show="report.show_overlay">
+						<div class="btn-group-vertical pull-right">
+							<button ng-click="close_report(report)" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-off"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- REPORTS: END -->
+
+
+
+<!-- LOG: START -->
+<div class="col-lg-4 col-md-4 col-sm-4">
+	<div id="LOG_LIST" class="row" style="margin-top: 8px; margin-bottom: 8px;">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="list-group">
+				<div ng-repeat="log in log_list | orderBy:'id':true" class="list-group-item log">
+					<div class="list-group-item-text">
+						<p class="log_">{{ log.log }}</p>
+						<p class="log_ts">{{ log.ts }}</p>
+					</div>
+
+					<h4 class="list-group-item-heading">{{ log.user }}</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- LOG: END -->
+
+
+
+<!-- MODAL NEW BRANCH: START -->
+<div class="modal fade" id="NEW_BRANCH" tabindex="-1" role="dialog" aria-labelledby="NEW_BRANCH_LABEL" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-success" id="NEW_BRANCH_LABEL">NEW BRANCH</h4>
+			</div>
+
+			<div class="modal-body">
+				<form name="new_branch_form" role="form" novalidate ng-submit="save_new_branch()">
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="new_branch.branch_name" placeholder="Branch Name" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="new_branch.access_type" placeholder="Access Type" ng-minlength=3 required />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="new_branch.service_type" placeholder="Service Type" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="new_branch.speed" placeholder="Speed" ng-minlength=3 required />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="number" class="form-control" ng-model="new_branch.service_no" placeholder="Service #" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="new_branch.ip_address" placeholder="IP Address" ng-minlength=7 required />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;</button>
+				<button type="button" class="btn btn-success" ng-click="save_new_branch()" ng-disabled="new_branch_form.$invalid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MODAL NEW BRANCH: END -->
+
+
+
+<!-- MODAL EDIT BRANCH: START -->
+<div class="modal fade" id="EDIT_BRANCH" tabindex="-1" role="dialog" aria-labelledby="EDIT_BRANCH_LABEL" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-success" id="EDIT_BRANCH_LABEL">EDIT BRANCH</h4>
+			</div>
+
+			<div class="modal-body">
+				<form name="edit_branch_form" role="form" novalidate ng-submit="update_branch()">
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="edit_branch.branch_name" placeholder="Branch Name" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="edit_branch.access_type" placeholder="Access Type" ng-minlength=3 required />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="edit_branch.service_type" placeholder="Service Type" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="edit_branch.speed" placeholder="Speed" ng-minlength=3 required />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="number" class="form-control" ng-model="edit_branch.service_no" placeholder="Service #" ng-minlength=3 required />
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group">
+								<input type="text" class="form-control" ng-model="edit_branch.ip_address" placeholder="IP Address" ng-minlength=7 required />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;</button>
+				<button type="button" class="btn btn-success" ng-click="update_branch()" ng-disabled="edit_branch_form.$invalid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MODAL EDIT BRANCH: END -->
+
+
+
+<!-- MODAL REPORT BRANCH: START -->
+<div class="modal fade" id="REPORT_BRANCH" tabindex="-1" role="dialog" aria-labelledby="REPORT_BRANCH_LABEL" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-success" id="REPORT_BRANCH_LABEL">REPORTING BRANCH <span class="badge">{{ report_branch.branch_name }}</span></h4>
+			</div>
+
+			<div class="modal-body">
+				<form name="report_branch_form" role="form" novalidate ng-submit="rep_branch()">
+					<div class="row">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8">
+							<div class="form-group">
+								<input type="number" class="form-control input-lg" ng-model="report_branch.ticket_no" placeholder="Ticket Number" ng-minlength=15 ng-maxlength=15 required />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;Cancel&nbsp;&nbsp;&nbsp;&nbsp;</button>
+				<button type="button" class="btn btn-success" ng-click="rep_branch()" ng-disabled="report_branch_form.$invalid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MODAL REPORT BRANCH: END -->
+
+
+
+<!-- MODAL USERS: START -->
+<div class="modal fade" id="CONFIG" tabindex="-1" role="dialog" aria-labelledby="CONFIG_LABEL" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="CONFIG_LABEL"><i class="glyphicon glyphicon-cog"></i>&nbsp;"Administration" STUFF</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-6 col-md-6 col-sm-6">
+						<div class="row" style="margin-bottom: 8px;">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+								<input type="text" class="form-control" placeholder="Search" ng-model="user_q" />
+							</div>
+						</div>
+
+						<div class="row" id="USER_LIST">
+							<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="list-group">
+									<div ng-repeat="user in user_list | orderBy:'username':false | filter:user_q:strict" class="list-group-item users">
+										<h4 class="list-group-item-heading">{{ user.username }}</h4>
+
+										<div class="overlay">
+											<div class="btn-group-vertical pull-right">
+												<button ng-show="current_user.super_duper" ng-click="delete_u(user)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div ng-show="current_user.super_duper" class="col-lg-6 col-md-6 col-sm-6">
+						<form name="new_user_form" role="form" novalidate ng-submit="user_plus()">
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="text" class="form-control" ng-model="new_user.username" placeholder="Username" ng-minlength=3 ng-maxlength=128 required />
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="password" class="form-control" ng-model="new_user.password" placeholder="Password" ng-minlength=3 ng-maxlength=128 required />
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<input type="email" class="form-control" ng-model="new_user.email" placeholder="Email" ng-minlength=3 ng-maxlength=128 required />
+									</div>
+								</div>
+							</div>
+
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" ng-model="new_user.super_duper" /> SUPER-DUPER
+								</label>
+							</div>
+
+							<div class="row">
+								<div class="col-ld-12 col-md-12 col-sm-12">
+									<div class="form-group">
+										<button type="button" class="btn btn-block btn-success" ng-disabled="new_user_form.$invalid" ng-click="user_plus()">ADD USER</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;Close&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MODAL USERS: END -->
