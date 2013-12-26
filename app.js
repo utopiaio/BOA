@@ -94,6 +94,7 @@ var server = http.createServer (app).listen (port, function () {
 											console.log (error);
 										}
 
+										/*
 										else {
 											pg_client.query ('INSERT INTO users (username, "password", email, super_duper) VALUES ($1, $2, $3, $4);', ["moe", "45217af896b912029728c16ca5c77688a8967ca70e594470a5f10ee8015436cf59d65761acaa0adeb4d5b6c3bfd5cfa3b49e5ac749c0e451119853c641afe026", "moe.duffdude@gmail.com", true], function (error, result) {
 												if (error) {
@@ -825,6 +826,7 @@ var server = http.createServer (app).listen (port, function () {
 												}
 											});
 										}
+										*/
 									});
 								}
 							});
