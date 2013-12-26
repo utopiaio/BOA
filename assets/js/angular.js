@@ -402,7 +402,6 @@ function home ($scope, $http, $location, $rootScope) {
 				data.LOG.ts = moment (data.LOG.ts).format("llll") +" ("+ moment(data.LOG.ts).fromNow() +")";
 				$scope.user_list.splice (0, 0, data.NEW_USER);
 				$scope.log_list.splice (0, 0, data.LOG);
-				console.log ($scope.user_list);
 				$scope.new_user = {
 					username:		"",
 					password:		"",
