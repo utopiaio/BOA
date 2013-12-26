@@ -1044,7 +1044,7 @@ function rest (request, response) {
 					OPENED_BRANCH = result.rows[0];
 					OPENED_BRANCH.branch = request.body.branch.branch_name;
 
-					pg_client.query ('INSERT INTO log ("user", log) VALUES ($1, $2) RETURNING *;', [request.session.user.id, "reported branch ["+  OPENED_BRANCH.branch_name +"]"], function (error, result) {
+					pg_client.query ('INSERT INTO log ("user", log) VALUES ($1, $2) RETURNING *;', [request.session.user.id, "reported branch ["+  request.body.branch.branch_name +"]"], function (error, result) {
 						if (!error) {
 							qJSON.JSON (response, {OPENED_BRANCH: OPENED_BRANCH, LOG: result.rows[0]});
 						}
