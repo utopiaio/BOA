@@ -1,11 +1,11 @@
 <div id="LOGIN_CONTAINER" class="col-lg-offset-4 col-md-offset-4 col-sm-offset-2 col-lg-4 col-md-4 col-sm-10">
 	<form name="login_form" role="form" novalidate ng-submit="submit()">
 		<div class="form-group">
-			<input type="text" class="form-control" ng-model="credential.username" placeholder="Username" ng-minlength=3 required />
+			<input id="USERNAME" type="text" class="form-control" ng-model="credential.username" placeholder="Username" />
 		</div>
 
 		<div class="form-group">
-			<input type="password" class="form-control" ng-model="credential.password" placeholder="Password" ng-minlength=6 required />
+			<input id="PASSWORD" type="password" class="form-control" ng-model="credential.password" placeholder="Password" />
 		</div>
 		
 		<button type="submit" ng-disabled="login_form.$invalid" class="btn btn-block btn-default">{{ login_stat }}</button>

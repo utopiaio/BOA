@@ -19,9 +19,11 @@ function login ($scope, $http, $location) {
 	};
 
 	$scope.submit = function () {
-		$scope.credential.password = CryptoJS.SHA256($scope.credential.password).toString();
-		$scope.login_stat = "Checking...";
+		// fixed a minor "bug"
+		$scope.credential.password = CryptoJS.SHA256($("#PASSWORD").val()).toString();
+		$scope.credential.username = $("#USERNAME").val();
 
+		$scope.login_stat = "Checking...";
 		$http ({
 			method:	"POST",
 			url:	"/login",
@@ -34,6 +36,7 @@ function login ($scope, $http, $location) {
 			else {
 				$scope.credential.username = "UNAUTHORIZED";
 				$scope.credential.password = "UNAUTHORIZED";
+				$scope.login_stat = "Login";
 			}
 		});
 	};
