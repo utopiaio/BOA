@@ -70,6 +70,7 @@ var server = http.createServer (app).listen (port, function () {
             process.exit (1);
         }
 
+		/* creating tables, will be executed only UNO time! */
         else {
 			pg_client.query ('CREATE TABLE IF NOT EXISTS users (id serial NOT NULL, username character varying(128), "password" character varying(128) NOT NULL, email character varying(128) NOT NULL, super_duper boolean NOT NULL DEFAULT false, CONSTRAINT user_pkey PRIMARY KEY (id), CONSTRAINT user_username_key UNIQUE (username));', function (error, result) {
 				if (error) {
@@ -95,6 +96,7 @@ var server = http.createServer (app).listen (port, function () {
 										}
 
 										/*
+										// this is part of the second commit
 										else {
 											pg_client.query ('INSERT INTO users (username, "password", email, super_duper) VALUES ($1, $2, $3, $4);', ["moe", "45217af896b912029728c16ca5c77688a8967ca70e594470a5f10ee8015436cf59d65761acaa0adeb4d5b6c3bfd5cfa3b49e5ac749c0e451119853c641afe026", "moe.duffdude@gmail.com", true], function (error, result) {
 												if (error) {
@@ -913,7 +915,7 @@ function signup (request, response) {
 
 /// don't get me started on REST for this app
 /// this does NOT implement REST - thought it's close for an app
-/// COMPLICATED as this
+/// COMPLICATED as this one :)
 /// @param {Object} request
 /// @param {Object} response
 function rest (request, response) {
