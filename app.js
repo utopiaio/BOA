@@ -46,7 +46,7 @@ app.use (connect.favicon (path.join (__dirname, "assets/image/node.png")));
 app.use (connect.logger ("dev"));
 app.use (connect.query());
 app.use (connect.bodyParser());
-app.use (connect.cookieParser ('$^&*GHDW@#D$AP78|=)27tBse!23VFUZ#z!XCE~!$}*FSHI-FBDs36fg6f@{9X$}'));
+app.use (connect.cookieParser (',&s*wZ2KTPI0OVhNid!wQc+$Lt4ledRsU!Ipl(AuWd9k3LCS_D-hgK9.M2ip'));
 app.use (connect.session (session));
 app.use (connect.csrf());
 app.use (connect.errorHandler());
