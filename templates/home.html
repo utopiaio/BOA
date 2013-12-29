@@ -10,11 +10,11 @@
 <!-- BRANCHES: START -->
 <div class="col-lg-4 col-md-4 col-sm-4">
 	<div class="row" style="margin-top: 8px; margin-bottom: 8px;">
-		<div class="col-lg-9 col-md-9 col-sm-9">
+		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 			<input type="text" class="form-control" placeholder="Search" ng-model="branch_q" />
 		</div>
 
-		<div class="col-lg-3 col-md-3 col-sm-3">
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 			<button type="button" class="btn btn-block btn-default" ng-click="lauch_new_modal()" ng-disabled="!current_user.super_duper">NEW&nbsp;<i class="glyphicon glyphicon-tower"></i></button>
 		</div>
 	</div>
@@ -116,13 +116,13 @@
 			<div class="modal-body">
 				<form name="new_branch_form" role="form" novalidate ng-submit="save_new_branch()">
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="new_branch.branch_name" placeholder="Branch Name" ng-minlength=1 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="new_branch.access_type" placeholder="Access Type" ng-minlength=1 required />
 							</div>
@@ -130,13 +130,13 @@
 					</div>
 
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="new_branch.service_type" placeholder="Service Type" ng-minlength=1 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="new_branch.speed" placeholder="Speed" ng-minlength=1 required />
 							</div>
@@ -144,13 +144,13 @@
 					</div>
 
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="number" class="form-control" ng-model="new_branch.service_no" placeholder="Service #" ng-minlength=1 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="new_branch.ip_address" placeholder="IP Address" ng-minlength=7 required />
 							</div>
@@ -182,13 +182,13 @@
 			<div class="modal-body">
 				<form name="edit_branch_form" role="form" novalidate ng-submit="update_branch()">
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="edit_branch.branch_name" placeholder="Branch Name" ng-minlength=3 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="edit_branch.access_type" placeholder="Access Type" ng-minlength=3 required />
 							</div>
@@ -196,13 +196,13 @@
 					</div>
 
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="edit_branch.service_type" placeholder="Service Type" ng-minlength=3 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="edit_branch.speed" placeholder="Speed" ng-minlength=3 required />
 							</div>
@@ -210,13 +210,13 @@
 					</div>
 
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="number" class="form-control" ng-model="edit_branch.service_no" placeholder="Service #" ng-minlength=3 required />
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-4 col-sm-4">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 							<div class="form-group">
 								<input type="text" class="form-control" ng-model="edit_branch.ip_address" placeholder="IP Address" ng-minlength=7 required />
 							</div>
@@ -248,7 +248,7 @@
 			<div class="modal-body">
 				<form name="report_branch_form" role="form" novalidate ng-submit="rep_branch()">
 					<div class="row">
-						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8">
+						<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-12">
 							<div class="form-group">
 								<input type="number" class="form-control input-lg" ng-model="report_branch.ticket_no" placeholder="Ticket Number" ng-minlength=15 ng-maxlength=15 required />
 							</div>
@@ -279,15 +279,15 @@
 
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-lg-6 col-md-6 col-sm-6">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<div class="row" style="margin-bottom: 8px;">
-							<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<input type="text" class="form-control" placeholder="Search" ng-model="user_q" />
 							</div>
 						</div>
 
 						<div class="row" id="USER_LIST">
-							<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<div class="list-group">
 									<div ng-repeat="user in user_list | orderBy:'username':false | filter:user_q:strict" class="list-group-item users">
 										<h4 class="list-group-item-heading">{{ user.username }}</h4>
@@ -303,10 +303,10 @@
 						</div>
 					</div>
 
-					<div ng-show="current_user.super_duper" class="col-lg-6 col-md-6 col-sm-6">
+					<div ng-show="current_user.super_duper" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						<form name="new_user_form" role="form" novalidate ng-submit="user_plus()">
 							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<input type="text" class="form-control" ng-model="new_user.username" placeholder="Username" ng-minlength=3 ng-maxlength=128 required />
 									</div>
@@ -314,7 +314,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<input type="password" class="form-control" ng-model="new_user.password" placeholder="Password" ng-minlength=3 ng-maxlength=128 required />
 									</div>
@@ -322,7 +322,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<input type="email" class="form-control" ng-model="new_user.email" placeholder="Email" ng-minlength=3 ng-maxlength=128 required />
 									</div>
@@ -336,7 +336,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-ld-12 col-md-12 col-sm-12">
+								<div class="col-ld-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="form-group">
 										<button type="button" class="btn btn-block btn-success" ng-disabled="new_user_form.$invalid" ng-click="user_plus()">ADD USER</button>
 									</div>
