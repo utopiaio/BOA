@@ -67,6 +67,12 @@ function home ($scope, $http, $location, $rootScope) {
 	$scope.report_branch = {};
 	$scope.edit_branch = {};
 
+	/// copying to clipboard
+	/// @param {ip} String
+	$scope.ping = function (ip) {
+		console.log (ip);
+	};
+
 	/// SCROLL READY
 	/// returns the current user --- from session, so don't try
 	/// anything NASTY

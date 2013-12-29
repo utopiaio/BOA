@@ -1,13 +1,13 @@
-var http = require ("http");
-var path = require ("path");
-var fs = require ("fs");
+var http = require("http");
+var path = require("path");
+var fs = require("fs");
 
-var cookie = require ("cookie");
-var connect = require ("connect");
-var pg = require ("pg");
+var cookie = require("cookie");
+var connect = require("connect");
+var pg = require("pg");
 
-var crypto = require (path.join (__dirname, "/lib/cyper"));
-var qJSON = require (path.join (__dirname, "/lib/qJSON"));
+var crypto = require(path.join(__dirname, "/lib/cyper"));
+var qJSON = require(path.join(__dirname, "/lib/qJSON"));
 
 var session = {
     key:    'BOA',
@@ -24,55 +24,55 @@ var cache = {};
 var JSON = {};
 var port = process.env.PORT || 8888;
 var pg_connection = process.env.DATABASE_URL || "tcp://postgres:password@127.0.0.1:5432/boa";
-var pg_client = new pg.Client (pg_connection);
+var pg_client = new pg.Client(pg_connection);
 
 
 
 /// adding a couple more of MIME's on the compression list of connect...
 /// @param {Object} request
 /// @param {Object} response
-function filter (request, response) {
-    var type = response.getHeader ('Content-Type') || "";
-    return type.match (/plain|image|html|css|javascript|json|ttf/);
+function filter(request, response) {
+    var type = response.getHeader('Content-Type') || "";
+    return type.match(/plain|image|html|css|javascript|json|ttf/);
 }
 
 
 
 var app = connect();
-app.use (connect.compress ({
+app.use(connect.compress({
 	filter:	filter
 }));
-app.use (connect.favicon (path.join (__dirname, "assets/image/node.png")));
-app.use (connect.logger ("dev"));
-app.use (connect.query());
-app.use (connect.bodyParser());
-app.use (connect.cookieParser (',&s*wZ2KTPI0OVhNid!wQc+$Lt4ledRsU!Ipl(AuWd9k3LCS_D-hgK9.M2ip'));
-app.use (connect.session (session));
-app.use (connect.csrf());
-app.use (connect.errorHandler());
-app.use ("/static", connect.static (path.join (__dirname, "assets")));
-app.use ("/templates", connect.static (path.join (__dirname, "templates")));
+app.use(connect.favicon(path.join(__dirname, "assets/image/node.png")));
+app.use(connect.logger("dev"));
+app.use(connect.query());
+app.use(connect.bodyParser());
+app.use(connect.cookieParser(',&s*wZ2KTPI0OVhNid!wQc+$Lt4ledRsU!Ipl(AuWd9k3LCS_D-hgK9.M2ip'));
+app.use(connect.session(session));
+app.use(connect.csrf());
+app.use(connect.errorHandler());
+app.use("/static", connect.static(path.join(__dirname, "assets")));
+app.use("/templates", connect.static(path.join(__dirname, "templates")));
 
-app.use ("/login", login);
-app.use ("/signup", signup);
-app.use ("/REST", rest);
-app.use (home);
+app.use("/login", login);
+app.use("/signup", signup);
+app.use("/REST", rest);
+app.use(home);
 
 
 
-var server = http.createServer (app).listen (port, function () {
-    console.log ("Server listening @ %d", port);
+var server = http.createServer(app).listen(port, function () {
+    console.log("Server listening @ %d", port);
 
     pg_client.connect (function (error) {
         // if there's an error connecting to the database server we'll be killing the whole thing!
         if (error) {
-            console.error ('Dude, i was unable to connect to DB.\n', error);
-            process.exit (1);
+            console.error('Dude, i was unable to connect to DB.\n', error);
+            process.exit(1);
         }
 
 		/* creating tables, will be executed only UNO time! */
         else {
-			pg_client.query ('CREATE TABLE IF NOT EXISTS users (id serial NOT NULL, username character varying(128), "password" character varying(128) NOT NULL, email character varying(128) NOT NULL, super_duper boolean NOT NULL DEFAULT false, CONSTRAINT user_pkey PRIMARY KEY (id), CONSTRAINT user_username_key UNIQUE (username));', function (error, result) {
+			pg_client.query('CREATE TABLE IF NOT EXISTS users (id serial NOT NULL, username character varying(128), "password" character varying(128) NOT NULL, email character varying(128) NOT NULL, super_duper boolean NOT NULL DEFAULT false, CONSTRAINT user_pkey PRIMARY KEY (id), CONSTRAINT user_username_key UNIQUE (username));', function (error, result) {
 				if (error) {
                     console.log (error);
                 }
@@ -80,12 +80,12 @@ var server = http.createServer (app).listen (port, function () {
 				else {
 					pg_client.query ('CREATE TABLE IF NOT EXISTS branch (id serial NOT NULL, branch_name character varying(192) NOT NULL, service_type character varying(32) NOT NULL, speed character varying(32), access_type character varying(32) NOT NULL, service_no bigint NOT NULL, ip_address character varying(16) NOT NULL, CONSTRAINT branch_pkey PRIMARY KEY (id));', function (error, result) {
 						if (error) {
-							console.log (error);
+							console.log(error);
 						}
 
 						else {
 							pg_client.query ('CREATE TABLE IF NOT EXISTS report (id serial NOT NULL, reported_by integer, ts timestamp with time zone NOT NULL DEFAULT now(), ticket_no character varying(128) NOT NULL, status character varying(64) NOT NULL, branch integer, ts_close timestamp with time zone DEFAULT now(), CONSTRAINT report_pkey PRIMARY KEY (id), CONSTRAINT "user" FOREIGN KEY (reported_by) REFERENCES users (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION, CONSTRAINT report_ticket_no_key UNIQUE (ticket_no));', function (error, result) {
-								if (error) {
+								if (error){
 									console.log (error);
 								}
 
@@ -845,12 +845,12 @@ var server = http.createServer (app).listen (port, function () {
 /// adding a couple more of MIME's on the compression list of connect...
 /// @param {Object} request
 /// @param {Object} response
-function home (request, response) {
+function home(request, response) {
     // if we cached it already - there won't be a need to read from DISK - which we all know for being FAST!
     if (cache.body !== undefined) {
-        response.setHeader ('Content-Type', 'text/html');
-        response.setHeader ('Content-Length', Buffer.byteLength (cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
-        response.end (cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
+        response.setHeader('Content-Type', 'text/html');
+        response.setHeader('Content-Length', Buffer.byteLength (cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
+        response.end(cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
     }
 
     else {

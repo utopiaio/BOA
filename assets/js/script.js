@@ -13,11 +13,6 @@ function csrf (data) {
     return data;
 }
 
-$(document).ready (function () {
-	
-});
-
-
 /// this is where the nice scroll will be called
 /// ONCE the DOM has loaded
 function do_DOM_js () {
