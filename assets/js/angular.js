@@ -67,7 +67,7 @@ function home ($scope, $http, $location, $rootScope) {
 	$scope.report_branch = {};
 	$scope.edit_branch = {};
 
-	/// copying to clipboard
+	/// copies to clipboard
 	/// @param {ip} String
 	$scope.ping = function (ip) {
 		console.log (ip);
