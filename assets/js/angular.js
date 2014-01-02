@@ -354,6 +354,7 @@ function home ($scope, $http, $location, $rootScope) {
 				data.OPENED_BRANCH.show_overlay = true;
 				data.OPENED_BRANCH.ts = moment (data.OPENED_BRANCH.ts).format("llll") +" ("+ moment(data.OPENED_BRANCH.ts).fromNow() +")";
 				data.LOG.user = $scope.current_user.username;
+				data.LOG.ts = moment (data.LOG.ts).format("llll") +" ("+ moment(data.LOG.ts).fromNow() +")";
 				$scope.report_list.splice (0, 0, data.OPENED_BRANCH);
 				$scope.log_list.splice (0, 0, data.LOG);
 				$("#REPORT_LIST, #LOG_LIST").getNiceScroll().resize();
