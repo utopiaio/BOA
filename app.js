@@ -10,11 +10,11 @@ var crypto = require(path.join(__dirname, "/lib/cyper"));
 var qJSON = require(path.join(__dirname, "/lib/qJSON"));
 
 var session = {
-    key:    'BOA',
-    cookie: {
-        maxAge:     259200000,
-        secure:     false
-    }
+	key:		'BOA',
+	cookie: {
+		maxAge:		259200000,
+		secure:		false
+	}
 };
 
 
@@ -32,8 +32,8 @@ var pg_client = new pg.Client(pg_connection);
 /// @param {Object} request
 /// @param {Object} response
 function filter(request, response) {
-    var type = response.getHeader('Content-Type') || "";
-    return type.match(/plain|image|html|css|javascript|json|ttf/);
+	var type = response.getHeader('Content-Type') || "";
+	return type.match(/plain|image|html|css|javascript|json|ttf/);
 }
 
 
@@ -61,21 +61,21 @@ app.use(home);
 
 
 var server = http.createServer(app).listen(port, function () {
-    console.log("Server listening @ %d", port);
+	console.log("Server listening @ %d", port);
 
-    pg_client.connect (function (error) {
-        // if there's an error connecting to the database server we'll be killing the whole thing!
-        if (error) {
-            console.error('Dude, i was unable to connect to DB.\n', error);
-            process.exit(1);
-        }
+	pg_client.connect (function (error) {
+		// if there's an error connecting to the database server we'll be killing the whole thing!
+		if (error) {
+			console.error('Dude, i was unable to connect to DB.\n', error);
+			process.exit(1);
+		}
 
 		/* creating tables, will be executed only UNO time! */
-        else {
+		else {
 			pg_client.query('CREATE TABLE IF NOT EXISTS users (id serial NOT NULL, username character varying(128), "password" character varying(128) NOT NULL, email character varying(128) NOT NULL, super_duper boolean NOT NULL DEFAULT false, CONSTRAINT user_pkey PRIMARY KEY (id), CONSTRAINT user_username_key UNIQUE (username));', function (error, result) {
 				if (error) {
-                    console.log (error);
-                }
+					console.log (error);
+				}
 
 				else {
 					pg_client.query ('CREATE TABLE IF NOT EXISTS branch (id serial NOT NULL, branch_name character varying(192) NOT NULL, service_type character varying(32) NOT NULL, speed character varying(32), access_type character varying(32) NOT NULL, service_no bigint NOT NULL, ip_address character varying(16) NOT NULL, CONSTRAINT branch_pkey PRIMARY KEY (id));', function (error, result) {
@@ -836,8 +836,8 @@ var server = http.createServer(app).listen(port, function () {
 					});
 				}
 			});
-        }
-    });
+		}
+	});
 });
 
 
@@ -846,25 +846,25 @@ var server = http.createServer(app).listen(port, function () {
 /// @param {Object} request
 /// @param {Object} response
 function home(request, response) {
-    // if we cached it already - there won't be a need to read from DISK - which we all know for being FAST!
-    if (cache.body !== undefined) {
-        response.setHeader('Content-Type', 'text/html');
-        response.setHeader('Content-Length', Buffer.byteLength (cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
-        response.end(cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
-    }
+	// if we cached it already - there won't be a need to read from DISK - which we all know for being FAST!
+	if (cache.body !== undefined) {
+		response.setHeader('Content-Type', 'text/html');
+		response.setHeader('Content-Length', Buffer.byteLength (cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
+		response.end(cache.body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
+	}
 
-    else {
-        var body = fs.readFileSync (path.join (__dirname, "/templates/index.html"), {
-            encoding:   "utf-8",
-            flag:       "r"
-        });
+	else {
+		var body = fs.readFileSync (path.join (__dirname, "/templates/index.html"), {
+			encoding:	"utf-8",
+			flag:		"r"
+		});
 
-        response.setHeader ('Content-Type', 'text/html');
-        response.setHeader ('Content-Length', Buffer.byteLength (body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
-        response.end(body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
-        // we'll be caching only the body --- the csrf will be unique for ERY request, well duh it's CSRF!
-        cache.body = body;
-    }
+		response.setHeader ('Content-Type', 'text/html');
+		response.setHeader ('Content-Length', Buffer.byteLength (body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />"));
+		response.end(body + "<input type='hidden' id='csrf' name='_csrf' value='" + request.csrfToken() + "' />");
+		// we'll be caching only the body --- the csrf will be unique for ERY request, well duh it's CSRF!
+		cache.body = body;
+	}
 }
 
 
@@ -873,17 +873,17 @@ function login (request, response) {
 	pg_client.query ("SELECT id, username, email, super_duper FROM users WHERE username=$1 AND password=$2", [request.body.username, crypto.sha512 (request.body.password)], function (error, result) {
 		if (error) {
 			JSON = {
-				success:    false,
-				code:       "DB_ERROR",
-				message:    "Something HORRIBLE went wrong :("
+				success:	false,
+				code:		"DB_ERROR",
+				message:	"Something HORRIBLE went wrong :("
 			};
 		}
 
 		else {
 			if (result.rowCount === 1) {
 				JSON = {
-					success:    true,
-					code:       "WHITE_MAN",
+					success:	true,
+					code:		"WHITE_MAN",
 					user:		result.rows[0]
 				};
 
@@ -894,9 +894,9 @@ function login (request, response) {
 			// BIG surprise here! --- we probably got injected....funny - "injected" --- or simply Username and password did not match
 			else {
 				JSON = {
-					success:    false,
-					code:       "NOT_COOL",
-					message:    "you're FAT!"
+					success:	false,
+					code:		"NOT_COOL",
+					message:	"you're FAT!"
 				};
 			}
 		}

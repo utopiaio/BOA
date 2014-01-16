@@ -45,6 +45,7 @@ function login ($scope, $http, $location) {
 
 
 function home ($scope, $http, $location, $rootScope) {
+	$scope.branch_q = "";
 	$scope.current_user = {};
 	$scope.branch_list = [];
 	$scope.report_list = [];
@@ -477,6 +478,13 @@ function home ($scope, $http, $location, $rootScope) {
 
 	// phew!
 	$scope.three_musketeers();
+
+	// this fixes a "bug" on scroll with nicescroll.js
+	$scope.$watch('branch_q', function (new_value, old_value) {
+		$("#BRANCH_LIST").getNiceScroll().resize();
+		$("#REPORT_LIST").getNiceScroll().resize();
+		$("#LOG_LIST").getNiceScroll().resize();
+	});
 };
 
 login.$inject = ["$scope", "$http", "$location"];

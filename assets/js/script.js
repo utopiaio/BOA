@@ -9,8 +9,8 @@
 /// @param {Object} data
 /// @return {Object}
 function csrf (data) {
-    data._csrf = $("#csrf").val();
-    return data;
+	data._csrf = $("#csrf").val();
+	return data;
 }
 
 /// this is where the nice scroll will be called
