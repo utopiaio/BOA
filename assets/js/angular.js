@@ -485,6 +485,13 @@ function home ($scope, $http, $location, $rootScope) {
 		$("#REPORT_LIST").getNiceScroll().resize();
 		$("#LOG_LIST").getNiceScroll().resize();
 	});
+
+	// can't forget report
+	$scope.$watch('report_q', function (new_value, old_value) {
+		$("#BRANCH_LIST").getNiceScroll().resize();
+		$("#REPORT_LIST").getNiceScroll().resize();
+		$("#LOG_LIST").getNiceScroll().resize();
+	});
 };
 
 login.$inject = ["$scope", "$http", "$location"];
