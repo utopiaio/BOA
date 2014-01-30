@@ -8,7 +8,8 @@
   "dependencies": {
     "connect": "latest",
     "pg": "latest",
-    "cookie": "latest"
+    "cookie": "latest",
+    "twilio": "latest"
   },
 
   "engines": {

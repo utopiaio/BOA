@@ -17,6 +17,18 @@ var session = {
 	}
 };
 
+var accountSid = 'AC08ca2597d6a64f836be167cdf5adc6ef'; 
+var authToken = 'a0506b525b5306ea148b6784d5b4778e'; 
+var twilio_client = require('twilio')(accountSid, authToken); 
+
+twilio_client.messages.create({
+	from: 	"+14842355783",
+	to:		"+251912442676",
+	body:	"TEST from TWilio!"
+}, function(err, message) {
+	console.log(message.sid);
+});
+
 
 
 var cache = {};
