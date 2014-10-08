@@ -1,0 +1,158 @@
+/* font: START ---------------------------------------------------------------*/
+@font-face {
+  font-family: 'ClearSans-Thin';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Thin.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'ClearSans-Light';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Light.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'ClearSans-Regular';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Regular.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'ClearSans-Medium';
+  src: url(../font/clearsans/WOFF/ClearSans-Medium.woff) format('woff');
+}
+
+.ClearSans-Thin {
+  font-family: 'ClearSans-Thin';
+}
+
+.ClearSans-Light {
+  font-family: 'ClearSans-Light';
+}
+
+.ClearSans-Regular {
+  font-family: 'ClearSans-Regular';
+}
+
+.ClearSans-Medium {
+  font-family: 'ClearSans-Medium';
+}
+/* font: END -----------------------------------------------------------------*/
+
+
+
+/* BS3 customization: START --------------------------------------------------*/
+@media(min-width: 768px) {
+  .container {
+    width: 1000px;
+  }
+}
+
+@media(max-width: 768px) {
+}
+/* BS3 customization: END ----------------------------------------------------*/
+
+
+
+/* Angular.js: START ---------------------------------------------------------*/
+#ngView.ng-enter {
+  opacity: 0;
+  -moz-transition: opacity linear 0.8s;
+  -webkit-transition: opacity linear 0.8s;
+  -o-transition: opacity linear 0.8s;
+  -ms-transition: opacity linear 0.8s;
+  transition: opacity linear 0.8s;
+}
+
+#ngView.ng-enter.ng-enter-active {
+  opacity: 1.0;
+}
+
+.ngRepeat.ng-enter,
+.ngRepeat.ng-leave,
+.ngRepeat.ng-move {
+  position: relative;
+  -moz-transition: 0.3s linear all;
+  -webkit-transition: 0.3s linear all;
+  -o-transition: 0.3s linear all;
+  -ms-transition: 0.3s linear all;
+  transition: 0.3s linear all;
+}
+
+.ngRepeat.ng-enter {
+  opacity: 0;
+  -moz-transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+  -o-transform: rotateX(90deg);
+  -ms-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+}
+
+.ngRepeat.ng-enter.ng-enter-active {
+  opacity: 1;
+  -moz-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+
+.ngRepeat.ng-leave {
+  opacity: 1;
+  -moz-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+
+.ngRepeat.ng-leave.ng-leave-active {
+  opacity: 0;
+  -moz-transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+  -o-transform: rotateX(90deg);
+  -ms-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+}
+
+.ngRepeat.ng-move {
+  opacity: 0.5;
+}
+
+.ngRepeat.ng-move.ng-move-active {
+  opacity: 1;
+}
+
+.ngShowHide {
+  -moz-transition: all linear 0.3s;
+  -webkit-transition:all linear 0.3s;
+  transition:all linear 0.3s;
+  opacity: 1;
+}
+
+.ngShowHide.ng-hide-add,
+.ngShowHide.ng-hide-remove {
+  opacity: 1.0;
+  display: block!important;
+}
+
+.ngShowHide.ng-hide {
+  opacity: 0;
+}
+
+[ng\:cloak], [ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+/* Angular.js: END -----------------------------------------------------------*/
+
+
+
+/* Moe Style: start */
+body {
+  font-family: 'ClearSans-Thin';
+  background-color: #fcfcfc;
+}
+
+.login-form {
+  margin-top: 20%;
+}
