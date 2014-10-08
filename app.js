@@ -65,6 +65,7 @@ app.use(bodyParser());
  *
  **/
 
+
 app.use('/api/login', function (request, response, next) {
   switch(request.method) {
     case 'GET':
@@ -99,6 +100,8 @@ app.use('/api/login', function (request, response, next) {
     break;
   }
 });
+
+
 
 // this makes sure angular is in-charge of routing
 app.use(function (request, response) {
