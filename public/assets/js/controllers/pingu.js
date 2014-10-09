@@ -1,5 +1,7 @@
 var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-  $http.get('api/login').error(function (data, status, headers, config) {
+  $http.get('api/login').success(function (data, status, headers, config) {
+    $scope.connect();
+  }).error(function (data, status, headers, config) {
     $location.path('/login');
   });
 

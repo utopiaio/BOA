@@ -11,6 +11,7 @@ var loginCtrl = app.controller('loginCtrl', ['$scope', '$http', '$location', fun
     $scope.credentials.password = $('#password').val();
 
     $http.post('api/login', $scope.credentials).success(function (data, status, headers, config) {
+      $scope.connect();
       $location.path('/');
     });
   };

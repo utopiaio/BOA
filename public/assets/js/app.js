@@ -17,6 +17,27 @@ app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($
   $rootScope.$on('$routeChangeSuccess', function (event, target) {
   });
 
+  $rootScope.io = null;
+
+  $rootScope.connect = function () {
+    if ($rootScope.io === null) {
+      $rootScope.io = io.connect();
+
+      $rootScope.io.on('connect', function () {
+        iPNotify({text: 'hurray, socket connection established', type: 'info'});
+      });
+
+      $rootScope.io.on('message', function (data) {
+        if (data.notify !== undefined) {
+          iPNotify(data.notify);
+        }
+      });
+
+      $rootScope.io.on('error', function (data) {
+        iPNotify({text: 'umm, what\'s up Doc?', type: 'error'});
+      });
+    }
+  };
 
   $rootScope.appCtrl = this;
 }]);
