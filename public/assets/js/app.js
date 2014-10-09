@@ -36,6 +36,13 @@ app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($
   };
 
   $rootScope.appCtrl = this;
+
+
+  $('.menu a, .menu button').click(function (e) {
+    $('.menu a, .menu button').removeClass('activex');
+    $(this).addClass('activex');
+  });
+
 }]);
 
 

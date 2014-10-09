@@ -1,8 +1,14 @@
 var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  $scope.branches = [];
+
   $http.get('api/login').success(function (data, status, headers, config) {
     $scope.connect();
   }).error(function (data, status, headers, config) {
     $location.path('/login');
+  });
+
+  $http.get('api/branches').success(function (data, status, headers, config) {
+    $scope.branches = data;
   });
 
   /*

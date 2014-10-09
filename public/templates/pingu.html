@@ -17,7 +17,38 @@
 
   <div class="row">
     <div class="col-lg-6 col-md-6 branch-container">
-      LEFT
+
+      <h4 class="text-muted text-center ngShowHide" ng-show="(branches | filter:searchBranches).length === 0">
+        nothing matching "<span ng-bind="searchBranches"></span>"
+      </h4>
+
+      <ul class="list-group moe-list">
+        <li ng-repeat="branch in branches | filter:searchBranches" class="list-group-item ngRepeat moe-item">
+          <p class="name" ng-bind="branch.branch_name"></p>
+          <p class="ip" ng-bind="branch.branch_ip"></p>
+          <p class="service" ng-bind="branch.branch_service_number"></p>
+          <p class="misc">
+            <span ng-bind="branch.branch_service_type"></span>&nbsp;-&nbsp;<span ng-bind="branch.branch_access_type"></span>&nbsp;-&nbsp;<span ng-bind="branch.branch_bandwidth"></span>
+          </p>
+
+
+          <div class="btn-group-vertical moe-pop">
+            <button type="button" class="btn btn-default" title="Ping">
+              <i class="ion-ios7-pulse"></i>
+            </button>
+
+            <button type="button" class="btn btn-default" title="Report">
+              <i class="ion-ios7-telephone-outline"></i>
+            </button>
+
+            <button type="button" class="btn btn-default" title="Edit">
+              <i class="ion-ios7-information-outline"></i>
+            </button>
+          </div>
+
+        </li>
+      </ul>
+
     </div>
 
     <div class="col-lg-6 col-md-6 report-container">

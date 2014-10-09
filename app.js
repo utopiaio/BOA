@@ -91,7 +91,7 @@ app.use('/api/login', function (request, response, next) {
             request.session.loggedIn = true;
             request.session.username = request.body.username;
             response.status(200);
-            response.json({notify: {text: 'welcome back ('+ request.body.username +') --- Mitch!'}});
+            response.json({notify: {text: 'welcome back Mitch! --- ('+ request.body.username +')'}});
           } else {
             response.status(401);
             response.json({notify: {text: 'welcome --- NAT!', type: 'error'}});
@@ -128,6 +128,38 @@ app.use('/^\/api\/*/', function (request, response, next) {
   } else {
     response.status(412);
     response.json({notify: {text: 'back of the line Mitch', type: 'error'}});
+  }
+});
+
+
+
+app.use('/api/branches', function (request, response, next) {
+  switch(request.method) {
+    case 'GET':
+      client.query('SELECT branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number FROM branches;', [], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happen, call 911'}});
+        } else {
+          response.status(200);
+          response.json(result.rows);
+        }
+      });
+    break;
+
+    case 'POST':
+    break;
+
+    case 'PUT':
+    break;
+
+    case 'DELETE':
+    break;
+
+    default:
+      response.status(405);
+      response.json({notify: {text: 'am snitching!', type: 'error'}});
+    break;
   }
 });
 
