@@ -176,4 +176,18 @@ body {
 .report-container {
   overflow-y: scroll;
 }
+
+.power {
+  margin-top: 100px;
+}
+
+.power a {
+  text-decoration: none;
+}
+
+.power img {
+  display: inline-block;
+  margin-left: 18px;
+  margin-right: 18px;
+}
 /* Moe Style: END ------------------------------------------------------------*/
