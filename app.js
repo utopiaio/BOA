@@ -91,7 +91,7 @@ app.use('/api/login', function (request, response, next) {
             request.session.loggedIn = true;
             request.session.username = request.body.username;
             response.status(200);
-            response.json({notify: {text: 'welcome, LUKE!'}});
+            response.json({notify: {text: 'welcome back ('+ request.body.username +') --- Mitch!'}});
           } else {
             response.status(401);
             response.json({notify: {text: 'welcome --- NAT!', type: 'error'}});
