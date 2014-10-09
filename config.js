@@ -1,6 +1,5 @@
 var fs = require('fs');
 
-
 module.exports = {
   port: 8888,
   pgConnectionString: 'tcp://postgres:password@127.0.0.1:5432/debra',

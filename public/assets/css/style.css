@@ -147,12 +147,33 @@
 
 
 
-/* Moe Style: start */
+/* Moe Style: START ----------------------------------------------------------*/
 body {
-  font-family: 'ClearSans-Thin';
+  font-family: 'ClearSans-Light';
   background-color: #fcfcfc;
 }
 
-.login-form {
-  margin-top: 20%;
+.pingu {
+  width: 100px;
+  display: inline-block;
+  margin-top: 100px;
 }
+
+.search-ion {
+  position: relative;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.search-ion i {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 200%;
+}
+
+.branch-container,
+.report-container {
+  overflow-y: scroll;
+}
+/* Moe Style: END ------------------------------------------------------------*/
