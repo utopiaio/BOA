@@ -165,7 +165,7 @@ io.use(function(socket, next) {
 // if a socket connection has established connection that means it's legit
 io.on('connection', function (socket) {
   // we have a connection
-  online[socket.handshake.session.username] = socket.id;
+  online[socket.handshake.session.username] = socket;
 
   // telling everybody the good news
   socket.broadcast.json.send({notify: {text: 'user ('+ socket.handshake.session.username +') now online', type: 'info'}});

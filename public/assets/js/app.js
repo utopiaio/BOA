@@ -3,10 +3,6 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate']);
 
 
 app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($rootScope, $http, $q, $location) {
-  $('a.dropdown-toggle').click(function (e) {
-    e.preventDefault();
-  });
-
   $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
     console.error(rejection);
   });
