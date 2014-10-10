@@ -28,7 +28,7 @@ var sha1 = require('./lib/cyper.js');
 var config = require('./config.js');
 
 
-var online = {}; // {username: socket_id}
+var sockets = {}; // {username: socket_id}
 
 var client = new pg.Client(config.pgConnectionString);
 client.connect();
@@ -90,6 +90,7 @@ app.use('/api/login', function (request, response, next) {
           if (result.rowCount === 1) {
             request.session.loggedIn = true;
             request.session.username = request.body.username;
+            request.session.user_id = result.rows[0].user_id;
             response.status(200);
             response.json({notify: {text: 'welcome back Mitch! --- ('+ request.body.username +')'}});
           } else {
@@ -133,13 +134,13 @@ app.use('/^\/api\/*/', function (request, response, next) {
 
 
 
-app.use('/api/branches', function (request, response, next) {
+app.use('/api/branches(/:id)?', function (request, response, next) {
   switch(request.method) {
     case 'GET':
       client.query('SELECT branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number FROM branches;', [], function (error, result) {
         if (error) {
           response.status(500);
-          response.json({notify: {text: 'something horrible has happen, call 911'}});
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
         } else {
           response.status(200);
           response.json(result.rows);
@@ -148,18 +149,108 @@ app.use('/api/branches', function (request, response, next) {
     break;
 
     case 'POST':
+      client.query('INSERT INTO branches (branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+        } else {
+          response.status(202);
+          response.json({notify: {text: 'hooray, new branch ('+ request.body.branch_name +')', type: 'success'}, newBranch: result.rows[0]});
+          sockets[request.session.username].broadcast.json.send({code: 'NEW_BRANCH', newBranch: result.rows[0], notify: {text: 'new branch ('+ request.body.branch_name +')', type: 'info'}});
+        }
+      });
     break;
 
     case 'PUT':
+      client.query('UPDATE branches SET branch_name=$1, branch_ip=$2, branch_service_type=$3, branch_access_type=$4, branch_bandwidth=$5, branch_service_number=$6 WHERE branch_id=$7 RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number, request.body.branch_id], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+        } else {
+          response.status(200);
+          response.json({notify: {text: 'branch updated ('+ request.body.branch_name +')', type: 'success'}, updatedBranch: result.rows[0]});
+          sockets[request.session.username].broadcast.json.send({code: 'UPDATED_BRANCH', updatedBranch: result.rows[0], notify: {text: 'branch updated ('+ request.body.branch_name +')', type: 'info'}});
+        }
+      });
     break;
 
     case 'DELETE':
+      client.query('delete from branches where branch_id=$1', [request.params['0']], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+        } else {
+          response.status(202);
+          response.json({notify: {text: 'branch deleted', type: 'success'}, deletedBranchId: Number(request.params['0'])});
+          sockets[request.session.username].broadcast.json.send({code: 'DELETED_BRANCH', deletedBranchId: Number(request.params['0']), notify: {text: 'branch deleted', type: 'info'}});
+        }
+      });
     break;
 
     default:
       response.status(405);
       response.json({notify: {text: 'am snitching!', type: 'error'}});
     break;
+  }
+});
+
+
+
+app.use('/api/reports(/:id)?', function (request, response, next) {
+  switch(request.method) {
+    case 'GET':
+      client.query('SELECT report_id, report_timestamp, report_alert, report_reporter, report_branch, report_ticket FROM reports;', [], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+        } else {
+          response.status(200);
+          response.json(result.rows);
+        }
+      });
+    break;
+
+    case 'POST':
+      client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_ticket, report_timestamp, report_alert, report_reporter, report_branch;', [request.body.ticket, request.body.alert, request.session.user_id, request.body.branch_id], function (error, result) {
+        if (error) {
+          response.status(500);
+          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+        } else {
+          response.status(202);
+          response.json({success: true});
+          io.emit('message', {
+            code: 'AC-DC',
+            notify: {text: 'branch reported', type: 'info'},
+            report: result.rows[0]
+          });
+        }
+      });
+    break;
+  }
+});
+
+
+
+app.post('/api/ping', function (request, response, next) {
+  // making sure we don't get "shocked" ;)
+  // we were about to be shocked, phew
+  if (request.body.ip.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/) === null) {
+    response.status(406);
+    response.json({notify: {text: 'am snitching!', type: 'error'}});
+  } else {
+    response.status(202);
+    response.json({notify: {text: 'ping-ing... <span class="badge">'+ request.body.ip +'</span>'}});
+
+    pingu.ping({c: 2, timeout: 3}, request.body.ip, function (result) {
+      // ERYbody in the whole wide world
+      if (result.loss === 100) {
+        // we're goung to broadcating to ERYbody
+        io.emit('message', {code: 'BLACK_HAWK_DOWN', data: {result: result, branch: request.body.branch}});
+      } else if (result.loss === 0) {
+        // it's all good bra --- not that bra, black people brother
+        io.sockets.connected[sockets[request.session.username].id].emit('message', {notify: {text: 'put the phone DOWN --- it\'s all good', type: 'success'}});
+      }
+    });
   }
 });
 
@@ -197,13 +288,18 @@ io.use(function(socket, next) {
 // if a socket connection has established connection that means it's legit
 io.on('connection', function (socket) {
   // we have a connection
-  online[socket.handshake.session.username] = socket;
+  sockets[socket.handshake.session.username] = socket;
 
   // telling everybody the good news
   socket.broadcast.json.send({notify: {text: 'user ('+ socket.handshake.session.username +') now online', type: 'info'}});
 
   // this tells everyone the sad news
   socket.on('disconnect', function () {
+    delete sockets[socket.handshake.session.username];
     io.emit('message', {notify: {text: 'user ('+ socket.handshake.session.username +') now OFFline', type: 'info'}});
   });
+
+  socket.on('I-GOT-IT', function (data) {
+    socket.broadcast.json.send({code: 'I-GOT-IT'});
+  })
 });
