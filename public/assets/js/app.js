@@ -139,7 +139,12 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
 
   $routeProvider.when('/', {
     templateUrl: 'templates/pingu.html',
-    controller: 'pinguCtrl'
+    controller: 'pinguCtrl',
+    resolve: {
+      socket:   pinguCtrl.socket,
+      branches: pinguCtrl.branches,
+      reports:  pinguCtrl.reports
+    }
   }).
 
   when('/login', {
