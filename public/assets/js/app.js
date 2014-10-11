@@ -35,27 +35,35 @@ app.controller('appCtrl', ['$rootScope', function ($rootScope) {
 
         switch(data.code) {
           // someone has created a new branch
+          // emitted to everyone except for the branch creator
+          // branch creator gets an ol' school JSON response from the server
           case 'NEW_BRANCH':
             $rootScope.$broadcast('NEW_BRANCH', data.newBranch);
           break;
 
           // someone has updated a branch info
+          // emitted to everyone except for the branch updater
+          // branch updater gets an ol' school JSON response from the server
           case 'UPDATED_BRANCH':
             $rootScope.$broadcast('UPDATED_BRANCH', data.updatedBranch);
           break;
 
           // i wonder what this one does --- oh, yes, someone has deleted shit
+          // emitted to everyone except for the branch deleter
+          // branch deleter gets an ol' school JSON response from the server
           case 'DELETED_BRANCH':
             $rootScope.$broadcast('DELETED_BRANCH', data.deletedBranchId);
           break;
 
           // MOVE-MOVE-MOVE
           // ping result shows a branch is down --- code BLACK!
+          // emitted to ERYone
           case 'BLACK_HAWK_DOWN':
             $rootScope.$broadcast('BLACK_HAWK_DOWN', data.data);
           break;
 
           // branch as been reported
+          // emitted to ERYone
           case 'AC-DC':
             $rootScope.$broadcast('AC-DC', data.report);
           break;

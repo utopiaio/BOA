@@ -51,15 +51,20 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
   $scope.$on('BLACK_HAWK_DOWN', function (event, data) {
     $('#black-hawk-down').modal();
     $scope.pingedBranch = data.branch;
-    $scope.report = data.result;
+    $scope.result = data.result;
+    $scope.report = {
+      branch_id:  data.branch.branch_id,
+      ticket:     '',
+      alert:      false
+    };
     $scope.$digest();
   });
 
+  // there's a logic collision
+  // the app doesn't differentiate between a modal launched via ping
+  // or manually, causing a report modal to close
+  // on both situations --- this is an official TODO
   $scope.$on('AC-DC', function (event, data) {
-    // there's a logic collision
-    // the app doesn't differentiate between a modal launched via ping
-    // or manually, causing a report modal to close EVEN if the modal is
-    // launched manually --- this is an official TODO
     $('#black-hawk-down').modal('hide');
     $scope.report = {
       branch_id:  '',
@@ -70,12 +75,9 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     $scope.$digest();
   });
 
+  // this is called when the form is added
+  // on success, we'll send the ticket to ERYone via socket
   this.report = function () {
-    // this is called when the form is added
-    //$scope.$emit('I-GO-IT', $scope.pingedBranch);
-    //$scope.report.branch_id = $scope.pingedBranch.branch_id;
-
-    // on success, will send the ticket to ERYone
     $http.post('api/reports', $scope.report);
   };
 
@@ -84,12 +86,12 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
       $scope.branches.push(data.newBranch);
       $('#new-branch-modal').modal('hide');
       $scope.newBranch = {
-        branch_name: '',
-        branch_ip: '',
-        branch_service_number: '',
-        branch_service_type: 'Data',
-        branch_access_type: 'ADSL',
-        branch_bandwidth: '512 Kbps'
+        branch_name:            '',
+        branch_ip:              '',
+        branch_service_number:  '',
+        branch_service_type:    'Data',
+        branch_access_type:     'ADSL',
+        branch_bandwidth:       '512 Kbps'
       };
     });
   };
@@ -100,6 +102,9 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
   };
 
   this.deleteBranch = function () {
+    // upon success, we'll go after the delete branch and well...
+    // splice the shit out it
+    // the rest will be informed to do the same via 'DELETED_BRANCH'
     $http.delete('api/branches/'+ $scope.editBranch.branch_id).success(function (data, status, headers, config) {
       for (index in $scope.branches) {
         if ($scope.branches[index].branch_id === data.deletedBranchId) {
@@ -112,21 +117,19 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     });
   };
 
+  // for re-usability purposes we're going to "tweak" the ip address
+  // and yes the server WILL make sure it's an IP so we don't get shocked ;)
   this.ping = function (branch) {
-    var ip = branch.branch_ip;
-    // for re-usability purposes we're going to "tweak" the ip address
-    // and yes the server WILL make sure it's an IP so we don't get shocked ;)
-    ip = ip.split(/\./);
+    var ip = branch.branch_ip.split(/\./);
 
     for (index in ip) {
       ip[index] = Number(ip[index]);
     }
 
-    ip[(ip.length - 1)]++;
+    ip[3]++; // well it's an IP ain't it
     ip = ip.join('.');
 
-    // since the result is going to be transmitted via socket
-    // we don't need to pipe stuff :)
+    // Pingu will get back to us (or ERYone) via socket
     $http.post('api/ping', {ip: ip, branch: branch});
   };
 
