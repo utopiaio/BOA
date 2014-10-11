@@ -313,16 +313,4 @@ io.on('connection', function (socket) {
     delete sockets[socket.handshake.session.username];
     io.emit('message', {notify: {text: 'user ('+ socket.handshake.session.username +') now OFFline', type: 'info'}});
   });
-
-  // once a ping confirms an IP is down, a broadcast is sent to ERYone
-  // whoever responds FIRST to the BLACK hAWK DOWN first will emit
-  // 'I-GOT-IT' and we'll broadcast (using the socket that called us)
-  // so that the modal closes automatically and the form is retested
-  //
-  // TODO:
-  // it seems redundant, why not close when 'AC-DC' is initiated
-  // why the use of another emit from client and broadcast, well
-  socket.on('I-GOT-IT', function (data) {
-    socket.broadcast.json.send({code: 'I-GOT-IT'});
-  })
 });

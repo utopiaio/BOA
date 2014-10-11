@@ -17,11 +17,15 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
   };
   $scope.editBranch = {};
 
+  // socket connection is handled via big daddy i.e. appCtrl
+  // everyone that is interested should be on the listen
+  // this i think creates a neat interaction logic
   $scope.$on('NEW_BRANCH', function (event, newBranch) {
     $scope.branches.push(newBranch);
     $scope.$digest();
   });
 
+  // we'll look through the list and update with the new info
   $scope.$on('UPDATED_BRANCH', function (event, updatedBranch) {
     for (index in $scope.branches) {
       if ($scope.branches[index].branch_id === updatedBranch.branch_id) {
@@ -32,6 +36,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     }
   });
 
+  // branch deleted
   $scope.$on('DELETED_BRANCH', function (event, deletedBranchId) {
     for (index in $scope.branches) {
       if ($scope.branches[index].branch_id === deletedBranchId) {
@@ -42,22 +47,33 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     }
   });
 
+  // ping result shows 100% loss
   $scope.$on('BLACK_HAWK_DOWN', function (event, data) {
     $('#black-hawk-down').modal();
     $scope.pingedBranch = data.branch;
+    $scope.report = data.result;
     $scope.$digest();
   });
 
   $scope.$on('AC-DC', function (event, data) {
+    // there's a logic collision
+    // the app doesn't differentiate between a modal launched via ping
+    // or manually, causing a report modal to close EVEN if the modal is
+    // launched manually --- this is an official TODO
     $('#black-hawk-down').modal('hide');
+    $scope.report = {
+      branch_id:  '',
+      ticket:     '',
+      alert:      false
+    };
     $scope.reports.push(data);
     $scope.$digest();
   });
 
   this.report = function () {
     // this is called when the form is added
-    $scope.$emit('I-GO-IT', $scope.pingedBranch);
-    $scope.report.branch_id = $scope.pingedBranch.branch_id;
+    //$scope.$emit('I-GO-IT', $scope.pingedBranch);
+    //$scope.report.branch_id = $scope.pingedBranch.branch_id;
 
     // on success, will send the ticket to ERYone
     $http.post('api/reports', $scope.report);

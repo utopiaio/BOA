@@ -2,7 +2,7 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch']);
 
 
 
-app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($rootScope, $http, $q, $location) {
+app.controller('appCtrl', ['$rootScope', function ($rootScope) {
   $rootScope.io = null;
 
   $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
@@ -55,14 +55,6 @@ app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($
             $rootScope.$broadcast('BLACK_HAWK_DOWN', data.data);
           break;
 
-          // TODO:
-          // i think this one is redundant
-          // i "think" (which i tend to do a lot) this can be replaced by
-          // AC-DC --- TNT
-          case 'I-GOT-IT':
-            $('#black-hawk-down').modal('hide');
-          break;
-
           // branch as been reported
           case 'AC-DC':
             $rootScope.$broadcast('AC-DC', data.report);
@@ -76,12 +68,6 @@ app.controller('appCtrl', ['$rootScope', '$http', '$q', '$location', function ($
       });
     }
   };
-
-  // TODO - besides Megan Fox
-  // like i said this seems to be redundant, will be fixed
-  $rootScope.$on('I-GO-IT', function (event, branchToBeReported) {
-    $rootScope.io.emit('I-GOT-IT', branchToBeReported);
-  });
 
   // binding to couple of DOM events, menu to be exact
   // using activex class to avoid "collision" with bootstrap
