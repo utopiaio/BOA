@@ -27,8 +27,9 @@ var pingu = require('./lib/pingu.js');
 var sha1 = require('./lib/cyper.js');
 var config = require('./config.js');
 
-
-var sockets = {}; // {username: socket_id}
+// sockets is where we're going to keep all those sockets that are connected
+// {username: socket}
+var sockets = {};
 
 var client = new pg.Client(config.pgConnectionString);
 client.connect();
@@ -55,22 +56,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-
-
-
-/*
- * since this is going to be a super cool and COMPLEX ;) app we're going
- * to in-line functions alot
- *
- *  api/login
- *  api/log
- *  api/branches
- *  api/report
- *  api/ping
- *  api/user
- *  api/stat
- *
- **/
 
 
 
@@ -199,7 +184,7 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
 app.use('/api/reports(/:id)?', function (request, response, next) {
   switch(request.method) {
     case 'GET':
-      client.query('SELECT report_id, report_timestamp, report_alert, report_reporter, report_branch, report_ticket FROM reports;', [], function (error, result) {
+      client.query('SELECT report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status FROM reports;', [], function (error, result) {
         if (error) {
           response.status(500);
           response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
@@ -211,13 +196,20 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
     break;
 
     case 'POST':
-      client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_ticket, report_timestamp, report_alert, report_reporter, report_branch;', [request.body.ticket, request.body.alert, request.session.user_id, request.body.branch_id], function (error, result) {
+      client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.ticket, request.body.alert, request.session.user_id, request.body.branch_id], function (error, result) {
         if (error) {
           response.status(500);
           response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
         } else {
+          // closing the connection ASAP so it doesn't keep spinning
+          // we're going use our sockets for the REAL data this time round
           response.status(202);
           response.json({success: true});
+
+          // upon a successful branch report
+          // ERYone (including the reporter) gets notified
+          // code name 'AC-DC' is applied because this mostly happens
+          // AFTER code 'BLACK HAWK DOWN' is emitted
           io.emit('message', {
             code: 'AC-DC',
             notify: {text: 'branch reported', type: 'info'},
@@ -225,6 +217,21 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
           });
         }
       });
+    break;
+
+    case 'PUT':
+      response.status(202);
+      response.send('PUT');
+    break;
+
+    case 'DELETE':
+      response.status(202);
+      response.send('DELETE');
+    break;
+
+    default:
+      response.status(405);
+      response.json({notify: {text: 'am snitching!', type: 'error'}});
     break;
   }
 });
@@ -238,18 +245,26 @@ app.post('/api/ping', function (request, response, next) {
     response.status(406);
     response.json({notify: {text: 'am snitching!', type: 'error'}});
   } else {
+    // responding to the one who initiated the ping
+    // PS: the result will be shared with ERYone
     response.status(202);
     response.json({notify: {text: 'ping-ing... <span class="badge">'+ request.body.ip +'</span>'}});
 
-    pingu.ping({c: 2, timeout: 3}, request.body.ip, function (result) {
-      // ERYbody in the whole wide world
+    pingu.ping({c: 2, timeout: 4}, request.body.ip, function (result) {
       if (result.loss === 100) {
-        // we're goung to broadcating to ERYbody
+        // broadcasting to ERYbody
+        // we need all hands on deck --- so to speak
+        // notification isn't going to cut it, we're going modal on this bitch
         io.emit('message', {code: 'BLACK_HAWK_DOWN', data: {result: result, branch: request.body.branch}});
       } else if (result.loss === 0) {
         // it's all good bra --- not that bra, black people brother
         io.sockets.connected[sockets[request.session.username].id].emit('message', {notify: {text: 'put the phone DOWN --- it\'s all good', type: 'success'}});
       }
+
+      // NOTE:
+      // here we're only looking out for either complete black out or 100% up
+      // which obviously isn't the case in the read world, there are lots
+      // of shit that could go wrong, i leave that shit to you - uncle Sam!
     });
   }
 });
@@ -290,7 +305,7 @@ io.on('connection', function (socket) {
   // we have a connection
   sockets[socket.handshake.session.username] = socket;
 
-  // telling everybody the good news
+  // telling ERYone the good news
   socket.broadcast.json.send({notify: {text: 'user ('+ socket.handshake.session.username +') now online', type: 'info'}});
 
   // this tells everyone the sad news
@@ -299,6 +314,14 @@ io.on('connection', function (socket) {
     io.emit('message', {notify: {text: 'user ('+ socket.handshake.session.username +') now OFFline', type: 'info'}});
   });
 
+  // once a ping confirms an IP is down, a broadcast is sent to ERYone
+  // whoever responds FIRST to the BLACK hAWK DOWN first will emit
+  // 'I-GOT-IT' and we'll broadcast (using the socket that called us)
+  // so that the modal closes automatically and the form is retested
+  //
+  // TODO:
+  // it seems redundant, why not close when 'AC-DC' is initiated
+  // why the use of another emit from client and broadcast, well
   socket.on('I-GOT-IT', function (data) {
     socket.broadcast.json.send({code: 'I-GOT-IT'});
   })
