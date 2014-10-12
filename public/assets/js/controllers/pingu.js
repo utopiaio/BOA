@@ -1,7 +1,6 @@
 var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'branches', 'reports', function ($scope, $http, $location, branches, reports) {
   $scope.branches = branches;
   $scope.reports = reports;
-
   $scope.newBranch = {
     branch_name:            '',
     branch_ip:              '',
@@ -15,7 +14,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     ticket:     '',
     alert:      false
   };
-  $scope.editBranch = {};
+  $scope.branch10_4 = {};
 
   // socket connection is handled via big daddy i.e. appCtrl
   // everyone that is interested should be on the listen
@@ -49,8 +48,9 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
 
   // ping result shows 100% loss
   $scope.$on('BLACK_HAWK_DOWN', function (event, data) {
-    $('#black-hawk-down').modal();
-    $scope.pingedBranch = data.branch;
+    $scope.branch10_4 = data.branch;
+    // not in-use for the time being
+    // but it's good to know it's there
     $scope.result = data.result;
     $scope.report = {
       branch_id:  data.branch.branch_id,
@@ -58,6 +58,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
       alert:      false
     };
     $scope.$digest();
+    $('#black-hawk-down').modal();
   });
 
   // there's a logic collision
@@ -75,12 +76,6 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     $scope.$digest();
   });
 
-  // this is called when the form is added
-  // on success, we'll send the ticket to ERYone via socket
-  this.report = function () {
-    $http.post('api/reports', $scope.report);
-  };
-
   this.newBranchsubmit = function () {
     $http.post('api/branches', $scope.newBranch).success(function (data, status, headers, config) {
       $scope.branches.push(data.newBranch);
@@ -96,16 +91,24 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     });
   };
 
-  this.editBranch = function (branch) {
-    $scope.editBranch = angular.copy(branch);
-    $('#edit-branch-modal').modal();
+  this.editBranchsubmit = function () {
+    $http.put('api/branches/'+ $scope.branch10_4.branch_id, $scope.branch10_4).success(function (data, status, headers, config) {
+      for (index in $scope.branches) {
+        if ($scope.branches[index].branch_id === data.updatedBranch.branch_id) {
+          $scope.branches[index] = data.updatedBranch;
+          break;
+        }
+      }
+
+      $('#edit-branch-modal').modal('hide');
+    });
   };
 
-  this.deleteBranch = function () {
+  this.deleteBranchSubmit = function () {
     // upon success, we'll go after the delete branch and well...
     // splice the shit out it
     // the rest will be informed to do the same via 'DELETED_BRANCH'
-    $http.delete('api/branches/'+ $scope.editBranch.branch_id).success(function (data, status, headers, config) {
+    $http.delete('api/branches/'+ $scope.branch10_4.branch_id).success(function (data, status, headers, config) {
       for (index in $scope.branches) {
         if ($scope.branches[index].branch_id === data.deletedBranchId) {
           $scope.branches.splice(index, 1);
@@ -115,6 +118,39 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
 
       $('#edit-branch-modal').modal('hide');
     });
+  };
+
+  // this is called when the form is added
+  // on success, we'll send the ticket to ERYone via socket
+  this.report = function () {
+    $http.post('api/reports', $scope.report);
+  };
+
+  // we're going to use California's five-o codes
+  this.cali = function (branch, mode) {
+    $scope.branch10_4 = angular.copy(branch);
+
+    switch(mode) {
+      // kidnapping attempt
+      // user just wants her number --- riiiiiiiiiiiiiiight
+      case '207A':
+        $('#edit-branch-modal').modal();
+      break;
+
+      // drunk
+      // user JUST wants to report a branch
+      // PS
+      // this is where the logic collision occurs, black hawk down will
+      // be launched --- which can be closed with AC-DC event is emitted
+      case '390':
+        $scope.report = {
+          branch_id:  $scope.branch10_4.branch_id,
+          ticket:     '',
+          alert:      false
+        };
+        $('#black-hawk-down').modal();
+      break;
+    }
   };
 
   // for re-usability purposes we're going to "tweak" the ip address
@@ -131,19 +167,6 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
 
     // Pingu will get back to us (or ERYone) via socket
     $http.post('api/ping', {ip: ip, branch: branch});
-  };
-
-  this.editBranchsubmit = function () {
-    $http.put('api/branches/'+ $scope.editBranch.branch_id, $scope.editBranch).success(function (data, status, headers, config) {
-      for (index in $scope.branches) {
-        if ($scope.branches[index].branch_id === data.updatedBranch.branch_id) {
-          $scope.branches[index] = data.updatedBranch;
-          break;
-        }
-      }
-
-      $('#edit-branch-modal').modal('hide');
-    });
   };
 
   $scope.pinguCtrl = this;
