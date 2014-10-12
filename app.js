@@ -311,6 +311,7 @@ io.on('connection', function (socket) {
   // this tells everyone the sad news
   socket.on('disconnect', function () {
     delete sockets[socket.handshake.session.username];
-    io.emit('message', {notify: {text: 'user ('+ socket.handshake.session.username +') now OFFline', type: 'info'}});
+    // yet another a bit too much info
+    // io.emit('message', {notify: {text: 'user ('+ socket.handshake.session.username +') now OFFline', type: 'info'}});
   });
 });

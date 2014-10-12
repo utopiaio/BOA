@@ -234,25 +234,29 @@ body {
   line-height: 100%;
 }
 
-.moe-list .name {
+.moe-list .name,
+form[name="bhdForm"] .form-group p.branch-name {
   font-size: 32px;
   font-family: 'ClearSans-Regular';
   color: rgba(52, 73, 94, 1.0);
   text-transform: capitalize;
 }
 
-.moe-list .ip {
+.moe-list .ip,
+form[name="bhdForm"] .form-group p.branch-ip {
   font-size: 32px;
   color: rgba(192, 57, 43, 0.5);
 }
 
-.moe-list .service {
+.moe-list .service,
+form[name="bhdForm"] .form-group p.branch-service-number {
   margin-bottom: 8px;
   font-size: 52px;
   color: rgba(127, 140, 141,1.0);
 }
 
-.moe-list .misc {
+.moe-list .misc,
+form[name="bhdForm"] .form-group p.branch-misc {
   margin-bottom: 0;
   font-size: 16px;
   color: rgba(149, 165, 166, 1.0);
@@ -307,5 +311,19 @@ body {
 
 .ui-pnotify .ui-pnotify-text button {
   margin-top: 8px;
+}
+
+form[name="bhdForm"] .form-group p {
+  margin: 0;
+  line-height: 100%;
+}
+
+form[name="bhdForm"] .checkbox label {
+  font-size: 24px;
+  color: rgba(192, 57, 43, 0.75);
+}
+
+form[name="bhdForm"] .checkbox input.report-alert {
+  margin-top: 16px;
 }
 /* Moe Style: END ------------------------------------------------------------*/
