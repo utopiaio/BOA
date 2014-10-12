@@ -69,8 +69,8 @@ app.use('/api/login', function (request, response, next) {
     case 'POST':
       client.query('SELECT user_id, user_username, user_access_type, user_suspended FROM users WHERE user_username=$1 AND user_password=$2 AND user_suspended=$3', [request.body.username, sha1.sha1(String(request.body.password)), false], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happen, call 911'}});
+          response.status(409);
+          response.json({notify: {text: 'am sexy and i know it!'}});
         } else {
           if (result.rowCount === 1) {
             request.session.loggedIn = true;
@@ -124,8 +124,8 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
     case 'GET':
       client.query('SELECT branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number FROM branches;', [], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'who let the dogs out!', type: 'error'}});
         } else {
           response.status(200);
           response.json(result.rows);
@@ -136,8 +136,8 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
     case 'POST':
       client.query('INSERT INTO branches (branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number) VALUES ($1, $2, $3, $4, $5, $6) RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'wasn\'t me', type: 'error'}});
         } else {
           response.status(202);
           response.json({notify: {text: 'hooray, new branch ('+ request.body.branch_name +')', type: 'success'}, newBranch: result.rows[0]});
@@ -149,8 +149,8 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
     case 'PUT':
       client.query('UPDATE branches SET branch_name=$1, branch_ip=$2, branch_service_type=$3, branch_access_type=$4, branch_bandwidth=$5, branch_service_number=$6 WHERE branch_id=$7 RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number, request.body.branch_id], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'girls just wanna fun', type: 'error'}});
         } else {
           response.status(200);
           response.json({notify: {text: 'branch updated ('+ request.body.branch_name +')', type: 'success'}, updatedBranch: result.rows[0]});
@@ -162,8 +162,8 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
     case 'DELETE':
       client.query('delete from branches where branch_id=$1', [request.params['0']], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'GGGGG G-Unit', type: 'error'}});
         } else {
           response.status(202);
           response.json({notify: {text: 'branch deleted', type: 'success'}, deletedBranchId: Number(request.params['0'])});
@@ -186,8 +186,8 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
     case 'GET':
       client.query('SELECT report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status FROM reports;', [], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'am Rick James BITCH!', type: 'error'}});
         } else {
           response.status(200);
           response.json(result.rows);
@@ -198,8 +198,8 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
     case 'POST':
       client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.ticket, request.body.alert, request.session.user_id, request.body.branch_id], function (error, result) {
         if (error) {
-          response.status(500);
-          response.json({notify: {text: 'something horrible has happened, call 911', type: 'error'}});
+          response.status(409);
+          response.json({notify: {text: 'smack that! AKON', type: 'error'}});
         } else {
           // closing the connection ASAP so it doesn't keep spinning
           // we're going use our sockets for the REAL data this time round
