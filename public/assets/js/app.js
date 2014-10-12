@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch']);
+var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSplit']);
 
 
 
