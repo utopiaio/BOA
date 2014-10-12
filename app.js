@@ -196,7 +196,7 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
     break;
 
     case 'POST':
-      client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.ticket, request.body.alert, request.session.user_id, request.body.branch_id], function (error, result) {
+      client.query('INSERT INTO reports (report_ticket, report_alert, report_reporter, report_branch) VALUES ($1, $2, $3, $4) RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.ticket, request.body.alert, request.session.username, request.body.branch_id], function (error, result) {
         if (error) {
           response.status(409);
           response.json({notify: {text: 'smack that! AKON', type: 'error'}});
