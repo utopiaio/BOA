@@ -108,7 +108,7 @@ app.use('/api/login', function (request, response, next) {
 
 // this middle fellow will check for authentication (i.e. session)
 // and will take the appropriate measures
-app.use('/^\/api\/*/', function (request, response, next) {
+app.use(/^\/api\/.*/, function (request, response, next) {
   if (request.session.loggedIn === true) {
     next();
   } else {
