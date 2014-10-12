@@ -45,11 +45,11 @@
               <i class="ion-ios7-pulse"></i>
             </button>
 
-            <button type="button" class="btn btn-default" title="Report">
+            <button type="button" class="btn btn-default" title="Report" ng-click="pinguCtrl.cali(branch, '390')">
               <i class="ion-ios7-telephone-outline"></i>
             </button>
 
-            <button type="button" class="btn btn-default" title="Edit" ng-click="pinguCtrl.editBranch(branch)">
+            <button type="button" class="btn btn-default" title="Edit" ng-click="pinguCtrl.cali(branch, '207A')">
               <i class="ion-ios7-information-outline"></i>
             </button>
           </div>
@@ -236,7 +236,7 @@
                        class="form-control"
                        id="branch-name"
                        placeholder="Name"
-                       ng-model="editBranch.branch_name"
+                       ng-model="branch10_4.branch_name"
                        ng-maxlength="128"
                        ng-minlength="2"
                        required>
@@ -246,7 +246,7 @@
                 <label for="branch-service-type">Service Type</label>
                 <select class="form-control"
                         id="branch-service-type"
-                        ng-model="editBranch.branch_service_type"
+                        ng-model="branch10_4.branch_service_type"
                         ng-maxlength="64"
                         required>
                   <option value="Data">Data</option>
@@ -265,7 +265,7 @@
                        class="form-control"
                        id="branch-ip"
                        placeholder="IP"
-                       ng-model="editBranch.branch_ip"
+                       ng-model="branch10_4.branch_ip"
                        ng-pattern="/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/"
                        required>
               </div>
@@ -274,7 +274,7 @@
                 <label for="branch-access-type">Access Type</label>
                 <select class="form-control"
                         id="branch-access-type"
-                        ng-model="editBranch.branch_access_type"
+                        ng-model="branch10_4.branch_access_type"
                         ng-maxlength="64"
                         required>
                   <option value="ADSL">ADSL</option>
@@ -293,7 +293,7 @@
                        class="form-control"
                        id="branch-service-number"
                        placeholder="Service Number"
-                       ng-model="editBranch.branch_service_number"
+                       ng-model="branch10_4.branch_service_number"
                        ng-pattern="/^[0-9]{6,32}$/"
                        required>
               </div>
@@ -302,7 +302,7 @@
                 <label for="branch-bandwidth">Bandwidth</label>
                 <select class="form-control"
                         id="branch-bandwidth"
-                        ng-model="editBranch.branch_bandwidth"
+                        ng-model="branch10_4.branch_bandwidth"
                         ng-maxlength="16"
                         required>
                   <option value="512 Kbps">512 Kbps</option>
@@ -330,7 +330,7 @@
               <div class="col-lg-12 col-md-12">
                 <button type="button"
                         class="btn btn-block btn-danger"
-                        ng-swipe-right="pinguCtrl.deleteBranch()">Delete</button>
+                        ng-swipe-right="pinguCtrl.deleteBranchSubmit()">Delete</button>
               </div>
             </div>
 
@@ -376,22 +376,22 @@
               ng-submit="pinguCtrl.report()">
 
           <div class="form-group">
-            <p class="branch-name" ng-bind="pingedBranch.branch_name"></p>
+            <p class="branch-name" ng-bind="branch10_4.branch_name"></p>
           </div>
 
           <div class="form-group">
-            <p class="branch-service-number" ng-bind="pingedBranch.branch_service_number"></p>
+            <p class="branch-service-number" ng-bind="branch10_4.branch_service_number"></p>
           </div>
 
           <div class="form-group">
-            <p class="branch-ip" ng-bind="pingedBranch.branch_ip"></p>
+            <p class="branch-ip" ng-bind="branch10_4.branch_ip"></p>
           </div>
 
           <div class="form-group">
             <p class="branch-misc">
-              <span ng-bind="pingedBranch.branch_service_type"></span>&nbsp;-&nbsp;
-              <span ng-bind="pingedBranch.branch_access_type"></span>&nbsp;-&nbsp;
-              <span ng-bind="pingedBranch.branch_bandwidth"></span>
+              <span ng-bind="branch10_4.branch_service_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="branch10_4.branch_access_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="branch10_4.branch_bandwidth"></span>
             </p>
           </div>
 
