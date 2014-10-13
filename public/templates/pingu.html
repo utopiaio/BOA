@@ -66,9 +66,29 @@
       </h4>
 
       <ul class="list-group moe-list">
-        <li ng-repeat="report in reports | orderBy:'report_id' | filter:qsearch" class="list-group-item ngRepeat moe-item">
-          <pre>{{ report|json }}</pre>
+        <li ng-repeat="report in reports | orderBy:'report_id':true | filter:qsearch" class="list-group-item ngRepeat moe-item" ng-class="{open: report.report_status === false, closed: report.report_status === true}">
+          <p class="name" ng-bind="report.branch.branch_name"></p>
+          <p class="ip" ng-bind="report.branch.branch_ip"></p>
+          <p class="service" ng-bind="report.branch.branch_service_number"></p>
+          <p class="misc">
+            <span ng-bind="report.branch.branch_service_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_access_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_bandwidth"></span>
+          </p>
 
+          <p class="open">
+            <span ng-bind="report.age.open.pretty"></span>&nbsp;(<span ng-bind="report.age.open.age"></span>)
+          </p>
+
+          <p class="closed" ng-if="report.report_status === true">
+            <span ng-bind="report.age.closed.pretty"></span>&nbsp;(<span ng-bind="report.age.closed.age"></span>)
+          </p>
+
+          <p class="reporter text-right" ng-bind="report.report_reporter"></p>
+
+          <!-- <pre>{{ report|json }}</pre> -->
 
           <div class="btn-group-vertical moe-pop">
             <button type="button"
@@ -79,7 +99,7 @@
               <i class="ion-ios7-pulse"></i>
             </button>
 
-            <button type="button" class="btn btn-default" title="Edit" ng-click="pinguCtrl.cali(report, '207A')">
+            <button type="button" class="btn btn-default" title="Edit">
               <i class="ion-ios7-information-outline"></i>
             </button>
           </div>

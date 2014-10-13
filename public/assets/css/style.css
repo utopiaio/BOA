@@ -262,6 +262,24 @@ form[name="bhdForm"] .form-group p.branch-misc {
   color: rgba(149, 165, 166, 1.0);
 }
 
+.moe-list .reporter {
+  font-size: 18px;
+  text-transform: lowercase;
+  margin-top: 8px;
+  margin-bottom: 0px;
+}
+
+.moe-list .moe-item.open p.open,
+.moe-list .moe-item.closed p.open {
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.moe-list .moe-item.closed p.closed {
+  font-size: 18px;
+  margin-top: 4px;
+}
+
 .moe-list .moe-item {
   position: relative;
 }
@@ -279,6 +297,14 @@ form[name="bhdForm"] .form-group p.branch-misc {
 
 .moe-list .moe-item:hover .moe-pop {
   opacity: 1;
+}
+
+.moe-list .moe-item.open {
+  background-color: rgba(128, 0, 0, 0.05);
+}
+
+.moe-list .moe-item.closed {
+  background-color: rgba(0, 128, 0, 0.05);
 }
 
 .moe-pop.btn-group-vertical .btn {

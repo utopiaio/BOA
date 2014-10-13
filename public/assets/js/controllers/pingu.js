@@ -105,6 +105,17 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
       for (branch in $scope.branches) {
         if ($scope.reports[report].report_branch === $scope.branches[branch].branch_id) {
           $scope.reports[report].branch = $scope.branches[branch];
+          $scope.reports[report].age = {
+            open: {
+              age: moment($scope.reports[report].report_timestamp_open).fromNow(),
+              pretty: moment($scope.reports[report].report_timestamp_open).format('MMMM, D YYYY, hh:mm A')
+            },
+            closed: {
+              age: $scope.reports[report].report_timestamp_close === null ? 'N/A' : moment($scope.reports[report].report_timestamp_close).fromNow(),
+              pretty: $scope.reports[report].report_timestamp_close === null ? 'N/A' : moment($scope.reports[report].report_timestamp_close).format('MMMM, D YYYY, hh:mm A')
+            }
+          };
+
           break;
         }
       }
@@ -280,6 +291,19 @@ pinguCtrl.reports = function ($q, $http) {
   var defer = $q.defer();
 
   $http.get('api/reports').success(function (data, status, headers, config) {
+    for (report in data) {
+      data[report].age = {
+        open: {
+          age: moment(data[report].report_timestamp_open).fromNow(),
+          pretty: moment(data[report].report_timestamp_open).format('MMMM D, YYYY, hh:mm A')
+        },
+        closed: {
+          age: data[report].report_timestamp_close === null ? 'N/A' : moment(data[report].report_timestamp_close).fromNow(),
+          pretty: data[report].report_timestamp_close === null ? 'N/A' : moment(data[report].report_timestamp_close).format('MMMM D, YYYY, hh:mm A')
+        }
+      };
+    }
+
     defer.resolve(data);
   }).error(function (data, status, headers, config) {
     defer.reject(data);
