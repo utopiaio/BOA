@@ -33,6 +33,8 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
         break;
       }
     }
+
+    $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
   });
 
   // branch deleted
@@ -76,6 +78,39 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     $scope.$digest();
   });
 
+  $scope.$on('BLACK_HAWK_UP', function (event, data) {
+    for (report in $scope.reports) {
+      if ($scope.reports[report].report_id === data.report.report_id) {
+        $scope.reports[report] = data.report;
+        break;
+      }
+    }
+
+    $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
+    $scope.$digest();
+  });
+
+  // whenever this function is called it'll go through the list of reports and
+  // add the referenced branch in the report
+  // PS
+  // this freaken' thing should be called like on ERY possible update so that
+  // the list stays updated --- we've come too far just to half-ass it
+  //
+  // double PS
+  // i know naming the function `match` is not advised
+  //
+  // with no further a-do, let's get it on!
+  this.match = function () {
+    for (report in $scope.reports) {
+      for (branch in $scope.branches) {
+        if ($scope.reports[report].report_branch === $scope.branches[branch].branch_id) {
+          $scope.reports[report].branch = $scope.branches[branch];
+          break;
+        }
+      }
+    }
+  };
+
   this.newBranchsubmit = function () {
     $http.post('api/branches', $scope.newBranch).success(function (data, status, headers, config) {
       $scope.branches.push(data.newBranch);
@@ -100,6 +135,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
         }
       }
 
+      $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
       $('#edit-branch-modal').modal('hide');
     });
   };
@@ -155,8 +191,16 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
 
   // for re-usability purposes we're going to "tweak" the ip address
   // and yes the server WILL make sure it's an IP so we don't get shocked ;)
-  this.ping = function (branch) {
-    var ip = branch.branch_ip.split(/\./);
+  this.ping = function (model, mode) {
+    var ip = '';
+
+    if (mode === 'PING_BRANCH') {
+      ip = model.branch_ip.split(/\./);
+    } else if (mode === 'PING_REPORT') {
+      // we're going to look for that freaken' branch and THEN...
+      // ping it and ping it HARD
+      ip = model.branch.branch_ip.split(/\./);
+    }
 
     for (index in ip) {
       ip[index] = Number(ip[index]);
@@ -166,11 +210,12 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
     ip = ip.join('.');
 
     // Pingu will get back to us (or ERYone) via socket
-    $http.post('api/ping', {ip: ip, branch: branch});
+    $http.post('api/ping', {ip: ip, branch: model, mode: mode});
   };
 
+  // we'll run the match one time, so we're up and running
+  this.match();
   $scope.pinguCtrl = this;
-
 
   // a couple of DOM bindings to make the page look pretty
   $('.branch-container, .report-container').css({

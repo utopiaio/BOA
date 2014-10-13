@@ -10,7 +10,7 @@
           class="input-lg form-control"
           type="text"
           placeholder="Search"
-          ng-model="searchBranches"
+          ng-model="qsearch"
         >
         <i class="ion-ios7-search-strong text-muted"></i>
       </div>
@@ -22,12 +22,12 @@
     <div class="col-lg-6 col-md-6 branch-container">
 
       <h4 class="text-muted text-center ngShowHide"
-          ng-show="(branches | filter:searchBranches).length === 0">
-        nothing matching "<span ng-bind="searchBranches"></span>"
+          ng-show="(branches | filter:qsearch).length === 0">
+        nothing matching "<span ng-bind="qsearch"></span>"
       </h4>
 
       <ul class="list-group moe-list">
-        <li ng-repeat="branch in branches | orderBy:'branch_name' | filter:searchBranches" class="list-group-item ngRepeat moe-item">
+        <li ng-repeat="branch in branches | orderBy:'branch_name' | filter:qsearch" class="list-group-item ngRepeat moe-item">
           <p class="name" ng-bind="branch.branch_name"></p>
           <p class="ip" ng-bind="branch.branch_ip"></p>
           <p class="service" ng-bind="branch.branch_service_number"></p>
@@ -41,7 +41,7 @@
 
 
           <div class="btn-group-vertical moe-pop">
-            <button type="button" class="btn btn-default" title="Ping" ng-click="pinguCtrl.ping(branch)">
+            <button type="button" class="btn btn-default" title="Ping" ng-click="pinguCtrl.ping(branch, 'PING_BRANCH')">
               <i class="ion-ios7-pulse"></i>
             </button>
 
@@ -60,7 +60,32 @@
     </div>
 
     <div class="col-lg-6 col-md-6 report-container">
-      <pre>{{ reports|json }}</pre>
+      <h4 class="text-muted text-center ngShowHide"
+          ng-show="(reports | filter:qsearch).length === 0">
+        nothing matching "<span ng-bind="qsearch"></span>"
+      </h4>
+
+      <ul class="list-group moe-list">
+        <li ng-repeat="report in reports | orderBy:'report_id' | filter:qsearch" class="list-group-item ngRepeat moe-item">
+          <pre>{{ report|json }}</pre>
+
+
+          <div class="btn-group-vertical moe-pop">
+            <button type="button"
+                    class="btn btn-default"
+                    title="Pingu"
+                    ng-show="report.report_status === false"
+                    ng-click="pinguCtrl.ping(report, 'PING_REPORT')">
+              <i class="ion-ios7-pulse"></i>
+            </button>
+
+            <button type="button" class="btn btn-default" title="Edit" ng-click="pinguCtrl.cali(report, '207A')">
+              <i class="ion-ios7-information-outline"></i>
+            </button>
+          </div>
+
+        </li>
+      </ul>
     </div>
   </div>
 

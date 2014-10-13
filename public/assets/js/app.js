@@ -67,6 +67,13 @@ app.controller('appCtrl', ['$rootScope', function ($rootScope) {
           case 'AC-DC':
             $rootScope.$broadcast('AC-DC', data.report);
           break;
+
+          case 'BLACK_HAWK_UP':
+            $rootScope.$broadcast('BLACK_HAWK_UP', {
+              result: data.result,
+              report: data.report
+            });
+          break;
         };
       });
 
