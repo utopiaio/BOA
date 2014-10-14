@@ -263,9 +263,8 @@ form[name="bhdForm"] .form-group p.branch-misc {
 }
 
 .moe-list .ticket {
-  border-top: 1px solid rgba(127, 140, 141, 0.25);
   padding-top: 8px;
-  margin: 12px 0px;
+  margin: 0;
   font-size: 38px;
   font-family: 'ClearSans-Regular';
   color: rgba(127, 140, 141, 1.0);
@@ -283,6 +282,11 @@ form[name="bhdForm"] .form-group p.branch-misc {
   top: -12px;
   left: 15px;
   color: rgba(192, 57, 43, 1.0);
+}
+
+.moe-list .stuff-i-learned-from-GBOX {
+  margin: 0;
+  margin-top: 12px;
 }
 
 .moe-list .moe-item.open p.open,
@@ -316,11 +320,11 @@ form[name="bhdForm"] .form-group p.branch-misc {
 }
 
 .moe-list .moe-item.open {
-  background-color: rgba(128, 0, 0, 0.05);
+  background-color: rgba(192, 57, 43, 0.1);
 }
 
 .moe-list .moe-item.closed {
-  background-color: rgba(0, 128, 0, 0.05);
+  background-color: rgba(46, 204, 113, 0.1);
 }
 
 .moe-pop.btn-group-vertical .btn {
