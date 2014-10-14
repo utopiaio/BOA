@@ -262,11 +262,18 @@ form[name="bhdForm"] .form-group p.branch-misc {
   color: rgba(149, 165, 166, 1.0);
 }
 
-.moe-list .reporter {
+.moe-list .status-reporter .reporter {
   font-size: 18px;
   text-transform: lowercase;
-  margin-top: 8px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+}
+
+.moe-list .status-reporter .status {
+  font-size: 32px;
+  position: absolute;
+  top: -12px;
+  left: 15px;
+  color: rgba(192, 57, 43, 1.0);
 }
 
 .moe-list .moe-item.open p.open,

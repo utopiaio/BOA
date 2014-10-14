@@ -86,7 +86,15 @@
             <span ng-bind="report.age.closed.pretty"></span>&nbsp;(<span ng-bind="report.age.closed.age"></span>)
           </p>
 
-          <p class="reporter text-right" ng-bind="report.report_reporter"></p>
+          <div class="row status-reporter">
+            <div class="col-lg-6 col-md-6 text-left">
+              <i class="status" ng-class="{'ion-alert-circled': report.report_alert === true}"></i>
+            </div>
+
+            <div class="col-lg-6 col-md-6 text-right">
+              <span class="reporter" ng-bind="report.report_reporter"></span>
+            </div>
+          </div>
 
           <!-- <pre>{{ report|json }}</pre> -->
 

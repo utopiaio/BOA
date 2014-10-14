@@ -75,6 +75,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
       alert:      false
     };
     $scope.reports.push(data);
+    $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
     $scope.$digest();
   });
 
