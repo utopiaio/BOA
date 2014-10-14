@@ -2,7 +2,7 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSplit']);
 
 
 
-app.controller('appCtrl', ['$rootScope', '$interval', function ($rootScope, $interval) {
+app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootScope, $interval, $http) {
   $rootScope.io = null;
   $rootScope.ageUpdate = null;
 
@@ -107,6 +107,11 @@ app.controller('appCtrl', ['$rootScope', '$interval', function ($rootScope, $int
     $('.menu a, .menu button').removeClass('activex');
     $(this).addClass('activex');
   });
+
+  this.logout = function () {
+    $http.delete('/api/login/delete');
+    location.reload();
+  };
 
   $rootScope.appCtrl = this;
 }]);
