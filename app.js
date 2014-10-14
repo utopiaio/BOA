@@ -325,13 +325,76 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
     break;
 
     case 'PUT':
-      response.status(202);
-      response.send('PUT');
+      var preSql = '',
+          params = [];
+
+      // user is manually closing a report
+      if (request.body.report_timestamp_close === null && request.body.report_status === true) {
+        preSql = 'report_alert=$1, report_ticket=$2, report_status=$3, report_timestamp_close=now()';
+      } else {
+        // we proceed as usual, alert, ticket, status
+        preSql = 'report_alert=$1, report_ticket=$2, report_status=$3';
+      }
+
+      client.query('UPDATE reports SET '+ preSql +' WHERE report_id=$4 RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.report_alert, request.body.report_ticket, request.body.report_status, request.body.report_id], function (error, result) {
+        if (error) {
+          response.status(409);
+          response.json({
+            notify: {
+              text: 'girls just wanna fun',
+              type: 'error'
+            }
+          });
+        } else {
+          response.status(200);
+          response.json({
+            notify: {
+              text: 'report updated',
+              type: 'success'
+            },
+            updatedReport: result.rows[0]
+          });
+          sockets[request.session.username].broadcast.json.send({
+            code: 'UPDATED_REPORT',
+            updatedReport: result.rows[0],
+            notify: {
+              text: 'report updated',
+              type: 'info'
+            }
+          });
+        }
+      });
     break;
 
     case 'DELETE':
-      response.status(202);
-      response.send('DELETE');
+      client.query('delete from reports where report_id=$1', [request.params['0']], function (error, result) {
+        if (error) {
+          response.status(409);
+          response.json({
+            notify: {
+              text: 'GGGGG G-Unit',
+              type: 'error'
+            }
+          });
+        } else {
+          response.status(202);
+          response.json({
+            notify: {
+              text: 'report deleted',
+              type: 'success'
+            },
+            deletedReportId: Number(request.params['0'])
+          });
+          sockets[request.session.username].broadcast.json.send({
+            code: 'DELETED_REPORT',
+            deletedReportId: Number(request.params['0']),
+            notify: {
+              text: 'report deleted',
+              type: 'info'
+            }
+          });
+        }
+      });
     break;
 
     default:

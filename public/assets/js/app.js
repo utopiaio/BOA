@@ -83,6 +83,14 @@ app.controller('appCtrl', ['$rootScope', '$interval', function ($rootScope, $int
               report: data.report
             });
           break;
+
+          case 'UPDATED_REPORT':
+            $rootScope.$broadcast('UPDATED_REPORT', data.updatedReport);
+          break;
+
+          case 'DELETED_REPORT':
+            $rootScope.$broadcast('DELETED_REPORT', data.deletedReportId);
+          break;
         };
       });
 

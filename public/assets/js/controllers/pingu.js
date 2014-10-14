@@ -15,6 +15,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
     alert:      false
   };
   $scope.branch10_4 = {};
+  $scope.report10_4 = {};
 
   // socket connection is handled via big daddy i.e. appCtrl
   // everyone that is interested should be on the listen
@@ -91,6 +92,28 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
     $scope.$digest();
   });
 
+  $scope.$on('UPDATED_REPORT', function (event, updatedReport) {
+    for (index in $scope.reports) {
+      if ($scope.reports[index].report_id === updatedReport.report_id) {
+        $scope.reports[index] = updatedReport;
+        $scope.$digest();
+        break;
+      }
+    }
+
+    $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
+  });
+
+  $scope.$on('DELETED_REPORT', function (event, deletedReportId) {
+    for (index in $scope.reports) {
+      if ($scope.reports[index].report_id === deletedReportId) {
+        $scope.reports.splice(index, 1);
+        $scope.$digest();
+        break;
+      }
+    }
+  });
+
   // whenever this function is called it'll go through the list of reports and
   // add the referenced branch in the report
   // PS
@@ -120,6 +143,10 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
           break;
         }
       }
+    }
+
+    if ($scope.$$phase === null) {
+      $scope.$digest();
     }
   };
 
@@ -172,6 +199,40 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
   // on success, we'll send the ticket to ERYone via socket
   this.report = function () {
     $http.post('api/reports', $scope.report);
+  };
+
+  // you know it
+  this.editReport = function (report) {
+    $scope.report10_4 = angular.copy(report);
+    $('#edit-report-modal').modal();
+  };
+
+  this.editReportsubmit = function () {
+    $http.put('api/reports/'+ $scope.report10_4.report_id, $scope.report10_4).success(function (data, status, headers, config) {
+      for (index in $scope.reports) {
+        if ($scope.reports[index].report_id === data.updatedReport.report_id) {
+          $scope.reports[index] = data.updatedReport;
+          break;
+        }
+      }
+
+      $scope.pinguCtrl.match(); // making sure ERYthing is up-to date
+      $('#edit-report-modal').modal('hide');
+    });
+  };
+
+  // am sure you see a pattern emerging here
+  this.deleteReportSubmit = function () {
+    $http.delete('api/reports/'+ $scope.report10_4.report_id).success(function (data, status, headers, config) {
+      for (index in $scope.reports) {
+        if ($scope.reports[index].report_id === data.deletedReportId) {
+          $scope.reports.splice(index, 1);
+          break;
+        }
+      }
+
+      $('#edit-report-modal').modal('hide');
+    });
   };
 
   // we're going to use California's five-o codes

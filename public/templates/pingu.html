@@ -106,7 +106,10 @@
               <i class="ion-ios7-pulse"></i>
             </button>
 
-            <button type="button" class="btn btn-default" title="Edit">
+            <button type="button"
+                    class="btn btn-default"
+                    title="Edit"
+                    ng-click="pinguCtrl.editReport(report)">
               <i class="ion-ios7-information-outline"></i>
             </button>
           </div>
@@ -455,13 +458,11 @@
 
           <div class="form-group text-left">
             <label for="report-ticket-number">Ticket Number</label>
-            <input type="number"
-                   class="form-control input-lg"
-                   id="report-ticket-number"
+            <input type="text"
+                   class="form-control input-lg report-ticket-number"
                    placeholder="Ticket Number"
                    ng-model="report.ticket"
-                   ng-minlength="15"
-                   ng-maxlength="15"
+                   ng-pattern="/^[0-9]{15}$/"
                    style="font-size: 24px;"
                    required>
           </div>
@@ -472,6 +473,111 @@
                 <button type="submit"
                         class="btn btn-block btn-primary"
                         ng-disabled="bhdForm.$invalid">Report</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- edit report -->
+<div class="modal fade" id="edit-report-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal">&times;</button>
+        <p class="modal-title">Edit Report</p>
+      </div>
+
+      <div class="modal-body text-center">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="editReportForm"
+              autocomplete="off"
+              ng-submit="pinguCtrl.editReportsubmit()">
+
+          <div class="form-group">
+            <p class="branch-name" ng-bind="report10_4.branch.branch_name"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-ip" ng-bind="report10_4.branch.branch_ip"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-service-number" ng-bind="report10_4.branch.branch_service_number | split"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-misc">
+              <span ng-bind="report10_4.branch.branch_service_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="report10_4.branch.branch_access_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="report10_4.branch.branch_bandwidth"></span>
+            </p>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-offset-1 col-md-offset-1 col-lg-5 col-md-5">
+              <div class="checkbox text-center">
+                <label>
+                  <input class="report-alert" type="checkbox" ng-model="report10_4.report_alert">Alert
+                </label>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-5">
+              <div class="checkbox text-center">
+                <label>
+                  <input class="report-alert" type="checkbox" ng-model="report10_4.report_status">Closed
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group text-left">
+            <label for="report-ticket-number">Ticket Number</label>
+            <input type="text"
+                   class="form-control input-lg report-ticket-number"
+                   placeholder="Ticket Number"
+                   ng-model="report10_4.report_ticket"
+                   ng-pattern="/^[0-9]{15}$/"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="editReportForm.$invalid">Update</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-danger"
+                        ng-swipe-right="pinguCtrl.deleteReportSubmit()">Delete</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
               </div>
             </div>
           </div>
