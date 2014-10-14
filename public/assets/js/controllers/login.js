@@ -1,4 +1,6 @@
 var loginCtrl = app.controller('loginCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  $scope.$emit('PAUSE');
+
   $scope.credentials = {
     username: '',
     password: ''

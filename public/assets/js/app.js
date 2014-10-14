@@ -2,8 +2,9 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSplit']);
 
 
 
-app.controller('appCtrl', ['$rootScope', function ($rootScope) {
+app.controller('appCtrl', ['$rootScope', '$interval', function ($rootScope, $interval) {
   $rootScope.io = null;
+  $rootScope.ageUpdate = null;
 
   $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
     console.error(rejection);
@@ -13,6 +14,14 @@ app.controller('appCtrl', ['$rootScope', function ($rootScope) {
   });
 
   $rootScope.$on('$routeChangeSuccess', function (event, target) {
+  });
+
+  // this function will be called to kill the $interval that is used in reports
+  $rootScope.$on('PAUSE', function (event, data) {
+    if ($rootScope.ageUpdate !== null) {
+      $interval.cancel($rootScope.ageUpdate);
+      $rootScope.ageUpdate = null;
+    }
   });
 
   $rootScope.connect = function () {

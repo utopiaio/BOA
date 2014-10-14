@@ -1,4 +1,4 @@
-var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'branches', 'reports', function ($scope, $http, $location, branches, reports) {
+var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$location', '$interval', 'branches', 'reports', function ($rootScope, $scope, $http, $location, $interval, branches, reports) {
   $scope.branches = branches;
   $scope.reports = reports;
   $scope.newBranch = {
@@ -228,6 +228,13 @@ var pinguCtrl = app.controller('pinguCtrl', ['$scope', '$http', '$location', 'br
   // we'll run the match one time, so we're up and running
   this.match();
   $scope.pinguCtrl = this;
+
+  // this makes sure time ages are updated every minute
+  // a few seconds ago becomes 1 minute ago :)
+  // i don't know weather or not i should have used emit instead of $rootScope
+  $rootScope.ageUpdate = $interval(function () {
+    $scope.pinguCtrl.match();
+  }, 60000);
 
   // a couple of DOM bindings to make the page look pretty
   $('.branch-container, .report-container').css({
