@@ -252,7 +252,7 @@ form[name="bhdForm"] .form-group p.branch-ip {
 form[name="bhdForm"] .form-group p.branch-service-number {
   margin-bottom: 8px;
   font-size: 52px;
-  color: rgba(127, 140, 141,1.0);
+  color: rgba(127, 140, 141, 1.0);
 }
 
 .moe-list .misc,
@@ -260,6 +260,15 @@ form[name="bhdForm"] .form-group p.branch-misc {
   margin-bottom: 0;
   font-size: 16px;
   color: rgba(149, 165, 166, 1.0);
+}
+
+.moe-list .ticket {
+  border-top: 1px solid rgba(127, 140, 141, 0.25);
+  padding-top: 8px;
+  margin: 12px 0px;
+  font-size: 38px;
+  font-family: 'ClearSans-Regular';
+  color: rgba(127, 140, 141, 1.0);
 }
 
 .moe-list .status-reporter .reporter {
