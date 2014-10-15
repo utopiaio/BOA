@@ -150,7 +150,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
     }
   };
 
-  this.newBranchsubmit = function () {
+  this.newBranchSubmit = function () {
     $http.post('api/branches', $scope.newBranch).success(function (data, status, headers, config) {
       $scope.branches.push(data.newBranch);
       $('#new-modal').modal('hide');
@@ -165,7 +165,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
     });
   };
 
-  this.editBranchsubmit = function () {
+  this.editBranchSubmit = function () {
     $http.put('api/branches/'+ $scope.branch10_4.branch_id, $scope.branch10_4).success(function (data, status, headers, config) {
       for (index in $scope.branches) {
         if ($scope.branches[index].branch_id === data.updatedBranch.branch_id) {

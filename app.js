@@ -81,6 +81,7 @@ app.use('/api/login', function (request, response, next) {
             request.session.loggedIn = true;
             request.session.username = request.body.username;
             request.session.user_id = result.rows[0].user_id;
+            request.session.user_access_type = result.rows[0].user_access_type;
             response.status(200);
             response.json({
               notify: {
@@ -185,8 +186,7 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
               text: 'hooray, new branch ('+ request.body.branch_name +')',
               type: 'success'
             },
-            newBranch:
-            result.rows[0]
+            newBranch: result.rows[0]
           });
           sockets[request.session.username].broadcast.json.send({
             code: 'NEW_BRANCH',
@@ -201,7 +201,7 @@ app.use('/api/branches(/:id)?', function (request, response, next) {
     break;
 
     case 'PUT':
-      client.query('UPDATE branches SET branch_name=$1, branch_ip=$2, branch_service_type=$3, branch_access_type=$4, branch_bandwidth=$5, branch_service_number=$6 WHERE branch_id=$7 RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number, request.body.branch_id], function (error, result) {
+      client.query('UPDATE branches SET branch_name=$1, branch_ip=$2, branch_service_type=$3, branch_access_type=$4, branch_bandwidth=$5, branch_service_number=$6 WHERE branch_id=$7 RETURNING branch_id, branch_name, branch_ip, branch_service_type, branch_access_type, branch_bandwidth, branch_service_number;', [request.body.branch_name, request.body.branch_ip, request.body.branch_service_type, request.body.branch_access_type, request.body.branch_bandwidth, request.body.branch_service_number, request.params['0']], function (error, result) {
         if (error) {
           response.status(409);
           response.json({
@@ -336,7 +336,7 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
         preSql = 'report_alert=$1, report_ticket=$2, report_status=$3';
       }
 
-      client.query('UPDATE reports SET '+ preSql +' WHERE report_id=$4 RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.report_alert, request.body.report_ticket, request.body.report_status, request.body.report_id], function (error, result) {
+      client.query('UPDATE reports SET '+ preSql +' WHERE report_id=$4 RETURNING report_id, report_timestamp_open, report_timestamp_close, report_alert, report_reporter, report_branch, report_ticket, report_status;', [request.body.report_alert, request.body.report_ticket, request.body.report_status, request.params['0']], function (error, result) {
         if (error) {
           response.status(409);
           response.json({
@@ -396,6 +396,167 @@ app.use('/api/reports(/:id)?', function (request, response, next) {
         }
       });
     break;
+
+    default:
+      response.status(405);
+      response.json({
+        notify: {
+          text: 'am snitching!',
+          type: 'error'
+        }
+      });
+    break;
+  }
+});
+
+
+
+app.use('/api/users(/:id)?', function (request, response, next) {
+  switch(request.method) {
+    case 'GET':
+      if (request.session.user_access_type === 'ADMIN') {
+        client.query('SELECT user_id, user_username, user_access_type, user_suspended FROM users;', [], function (error, result) {
+          if (error) {
+            response.status(409);
+            response.json({
+              notify: {
+                text: 'who let the dogs out!',
+                type: 'error'
+              }
+            });
+          } else {
+            response.status(200);
+            response.json(result.rows);
+          }
+        });
+      } else {
+        response.status(405);
+        response.json({
+          notify: {
+            text: 'i will find you and i will kill you',
+            type: 'error'
+          }
+        });
+      }
+    break;
+
+    case 'POST':
+      if (request.session.user_access_type === 'ADMIN') {
+        client.query('INSERT INTO users (user_username, user_password, user_access_type, user_suspended) VALUES ($1, $2, $3, $4) RETURNING user_id, user_username, user_access_type, user_suspended;', [request.body.user_username, sha1.sha1(String(request.body.user_password)), request.body.user_access_type, request.body.user_suspended], function (error, result) {
+          if (error) {
+            response.status(409);
+            response.json({
+              notify: {
+                text: 'wasn\'t me',
+                type: 'error'
+              }
+            });
+          } else {
+            response.status(202);
+            response.json({
+              notify: {
+                text: 'new user ('+ request.body.user_username +') created',
+                type: 'success'
+              },
+              newUser: result.rows[0]
+            });
+
+            sockets[request.session.username].broadcast.json.send({
+              code: 'NEW_USER',
+              newUser: result.rows[0]
+            });
+          }
+        });
+      } else {
+        // i don't know how you did it, but, I'll find you and i will kill you
+        response.status(405);
+        response.json({
+          notify: {
+            text: 'i will find you and i will kill you',
+            type: 'error'
+          }
+        });
+      }
+    break;
+
+    case 'PUT':
+      if (request.session.user_access_type === 'ADMIN') {
+        client.query('UPDATE users SET user_username=$1, user_access_type=$2, user_suspended=$3 WHERE user_id=$4 RETURNING user_id, user_username, user_access_type, user_suspended;', [request.body.user_username, request.body.user_access_type, request.body.user_suspended, request.params['0']], function (error, result) {
+          if (error) {
+            response.status(409);
+            response.json({
+              notify: {
+                text: 'girls just wanna fun',
+                type: 'error'
+              }
+            });
+          } else {
+            response.status(202);
+            response.json({
+              notify: {
+                text: 'user ('+ request.body.user_username +') updated',
+                type: 'success'
+              },
+              updatedUser: result.rows[0]
+            });
+            sockets[request.session.username].broadcast.json.send({
+              code: 'UPDATED_USER',
+              updatedUser: result.rows[0]
+            });
+          }
+        });
+      } else {
+        response.status(405);
+        response.json({
+          notify: {
+            text: 'i will find you and i will kill you',
+            type: 'error'
+          }
+        });
+      }
+    break;
+
+    case 'DELETE':
+      if (request.session.user_access_type === 'ADMIN') {
+        client.query('delete from users where user_id=$1', [request.params['0']], function (error, result) {
+          if (error) {
+            response.status(409);
+            response.json({
+              notify: {
+                text: 'GGGGG G-Unit',
+                type: 'error'
+              }
+            });
+          } else {
+            response.status(202);
+            response.json({
+              notify: {
+                text: 'user deleted',
+                type: 'success'
+              },
+              deletedUserId: Number(request.params['0'])
+            });
+            sockets[request.session.username].broadcast.json.send({
+              code: 'DELETED_USER',
+              deletedUserId: Number(request.params['0']),
+              notify: {
+                text: 'user deleted',
+                type: 'info'
+              }
+            });
+          }
+        });
+      } else {
+        response.status(405);
+        response.json({
+          notify: {
+            text: 'i will find you and i will kill you',
+            type: 'error'
+          }
+        });
+      }
+    break;
+
 
     default:
       response.status(405);

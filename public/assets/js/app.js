@@ -182,7 +182,10 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
 
   when('/users', {
     templateUrl: 'templates/users.html',
-    controller: 'usersCtrl'
+    controller: 'usersCtrl',
+    resolve: {
+      users: usersCtrl.users
+    }
   }).
 
   when('/log', {

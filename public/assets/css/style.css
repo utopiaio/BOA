@@ -374,13 +374,15 @@ form[name="editReportForm"] .form-group p {
 }
 
 form[name="bhdForm"] .checkbox label,
-form[name="editReportForm"] .checkbox label {
+form[name="editReportForm"] .checkbox label,
+form[name="newUserForm"] .checkbox label {
   font-size: 24px;
   color: rgba(192, 57, 43, 0.75);
 }
 
 form[name="bhdForm"] .checkbox input.report-alert,
-form[name="editReportForm"] .checkbox input.report-alert {
+form[name="editReportForm"] .checkbox input.report-alert,
+form[name="newUserForm"] .checkbox input.user-suspended {
   margin-top: 16px;
 }
 /* Moe Style: END ------------------------------------------------------------*/
