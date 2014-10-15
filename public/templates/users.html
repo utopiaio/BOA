@@ -26,20 +26,14 @@
 
       <ul class="list-group moe-list">
         <li ng-repeat="user in users | orderBy:'user_username' | filter:qsearch" class="list-group-item ngRepeat moe-item">
-          <!--
-          <p class="name" ng-bind="branch.branch_name"></p>
-          <p class="ip" ng-bind="branch.branch_ip"></p>
-          <p class="service" ng-bind="branch.branch_service_number | split"></p>
+          <p class="name" ng-bind="user.user_username"></p>
           <p class="misc">
-            <span ng-bind="branch.branch_service_type"></span>
-            &nbsp;-&nbsp;
-            <span ng-bind="branch.branch_access_type"></span>
-            &nbsp;-&nbsp;
-            <span ng-bind="branch.branch_bandwidth"></span>
+            <span ng-bind="user.user_access_type"></span>
           </p>
-          -->
-          <pre>{{ user|json }}</pre>
-
+          <p class="status">
+            <i ng-if="user.user_suspended === false" class="text-success ion-ios7-checkmark-outline"></i>
+            <i ng-if="user.user_suspended === true" class="text-danger ion-ios7-close-outline"></i>
+          </p>
 
           <div class="btn-group-vertical moe-pop">
             <button type="button" class="btn btn-default" title="Edit" ng-click="usersCtrl.editUser(user)">

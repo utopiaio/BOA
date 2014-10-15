@@ -91,6 +91,18 @@ app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootSc
           case 'DELETED_REPORT':
             $rootScope.$broadcast('DELETED_REPORT', data.deletedReportId);
           break;
+
+          case 'NEW_USER':
+            $rootScope.$broadcast('NEW_USER', data.newUser);
+          break;
+
+          case 'UPDATED_USER':
+            $rootScope.$broadcast('UPDATED_USER', data.updatedUser);
+          break;
+
+          case 'DELETED_USER':
+            $rootScope.$broadcast('DELETED_USER', data.deletedUserId);
+          break;
         };
       });
 
@@ -184,6 +196,7 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
     templateUrl: 'templates/users.html',
     controller: 'usersCtrl',
     resolve: {
+      socket: pinguCtrl.socket,
       users: usersCtrl.users
     }
   }).

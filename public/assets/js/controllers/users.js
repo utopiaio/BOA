@@ -103,7 +103,7 @@ var usersCtrl = app.controller('usersCtrl', ['$scope', '$http', 'users', functio
 
 
 
-pinguCtrl.users = function ($q, $http, $location) {
+usersCtrl.users = function ($q, $http, $location) {
   var defer = $q.defer();
 
   $http.get('api/users').success(function (data, status, headers, config) {

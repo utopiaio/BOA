@@ -308,6 +308,11 @@ form[name="editReportForm"] .form-group p.branch-misc {
   position: relative;
 }
 
+.moe-list .status {
+  margin-top: 8px;
+  font-size: 32px;
+}
+
 .moe-list .moe-item .moe-pop {
   position: absolute;
   top: 0;

@@ -79,7 +79,7 @@ app.use('/api/login', function (request, response, next) {
         } else {
           if (result.rowCount === 1) {
             request.session.loggedIn = true;
-            request.session.username = request.body.username;
+            request.session.username = result.rows[0].user_username;
             request.session.user_id = result.rows[0].user_id;
             request.session.user_access_type = result.rows[0].user_access_type;
             response.status(200);
