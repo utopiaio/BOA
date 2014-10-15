@@ -1,0 +1,591 @@
+<!-- there's going to be a shit load of tags here so bear with me -->
+
+
+<div class="col-lg-12 col-md-12">
+
+  <div class="row">
+    <div class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6">
+      <div class="search-ion">
+        <input
+          class="input-lg form-control"
+          type="text"
+          placeholder="Search"
+          ng-model="qsearch"
+        >
+        <i class="ion-ios7-search-strong text-muted"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 branch-container">
+
+      <h4 class="text-muted text-center ngShowHide"
+          ng-show="(branches | filter:qsearch).length === 0">
+        nothing matching "<span ng-bind="qsearch"></span>"
+      </h4>
+
+      <ul class="list-group moe-list">
+        <li ng-repeat="branch in branches | orderBy:'branch_name' | filter:qsearch" class="list-group-item ngRepeat moe-item">
+          <p class="name" ng-bind="branch.branch_name"></p>
+          <p class="ip" ng-bind="branch.branch_ip"></p>
+          <p class="service" ng-bind="branch.branch_service_number | split"></p>
+          <p class="misc">
+            <span ng-bind="branch.branch_service_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="branch.branch_access_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="branch.branch_bandwidth"></span>
+          </p>
+
+
+          <div class="btn-group-vertical moe-pop">
+            <button type="button" class="btn btn-default" title="Ping" ng-click="pinguCtrl.ping(branch, 'PING_BRANCH')">
+              <i class="ion-ios7-pulse"></i>
+            </button>
+
+            <button type="button" class="btn btn-default" title="Report" ng-click="pinguCtrl.cali(branch, '390')">
+              <i class="ion-ios7-telephone-outline"></i>
+            </button>
+
+            <button type="button" class="btn btn-default" title="Edit" ng-click="pinguCtrl.cali(branch, '207A')">
+              <i class="ion-ios7-information-outline"></i>
+            </button>
+          </div>
+
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="col-lg-6 col-md-6 report-container">
+      <h4 class="text-muted text-center ngShowHide"
+          ng-show="(reports | filter:qsearch).length === 0">
+        nothing matching "<span ng-bind="qsearch"></span>"
+      </h4>
+
+      <ul class="list-group moe-list">
+        <li ng-repeat="report in reports | orderBy:'report_id':true | filter:qsearch" class="list-group-item ngRepeat moe-item" ng-class="{open: report.report_status === false, closed: report.report_status === true}">
+          <p class="name" ng-bind="report.branch.branch_name"></p>
+          <p class="ip" ng-bind="report.branch.branch_ip"></p>
+          <p class="service" ng-bind="report.branch.branch_service_number | split"></p>
+          <p class="misc">
+            <span ng-bind="report.branch.branch_service_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_access_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_bandwidth"></span>
+          </p>
+
+          <p class="stuff-i-learned-from-GBOX"></p>
+          <p class="ticket" ng-bind="report.report_ticket | split"></p>
+          <p class="open">
+            <span ng-bind="report.age.open.pretty"></span>&nbsp;(<span ng-bind="report.age.open.age"></span>)
+          </p>
+          <p class="closed" ng-if="report.report_status === true">
+            <span ng-bind="report.age.closed.pretty"></span>&nbsp;(<span ng-bind="report.age.closed.age"></span>)
+          </p>
+
+          <div class="row status-reporter">
+            <div class="col-lg-6 col-md-6 text-left">
+              <i class="status" ng-class="{'ion-alert-circled': report.report_alert === true}"></i>
+            </div>
+
+            <div class="col-lg-6 col-md-6 text-right">
+              <span class="reporter" ng-bind="report.report_reporter"></span>
+            </div>
+          </div>
+
+          <div class="btn-group-vertical moe-pop">
+            <button type="button"
+                    class="btn btn-default"
+                    title="Pingu"
+                    ng-show="report.report_status === false"
+                    ng-click="pinguCtrl.ping(report, 'PING_REPORT')">
+              <i class="ion-ios7-pulse"></i>
+            </button>
+
+            <button type="button"
+                    class="btn btn-default"
+                    title="Edit"
+                    ng-click="pinguCtrl.editReport(report)">
+              <i class="ion-ios7-information-outline"></i>
+            </button>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- new branch -->
+<div class="modal fade" id="new-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <p class="modal-title">New Branch</p>
+      </div>
+
+      <div class="modal-body">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="newBranchForm"
+              autocomplete="off"
+              ng-submit="pinguCtrl.newBranchSubmit()">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-name">Name *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-name"
+                       placeholder="Name"
+                       ng-model="newBranch.branch_name"
+                       ng-maxlength="128"
+                       ng-minlength="2"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-service-type">Service Type</label>
+                <select class="form-control"
+                        id="branch-service-type"
+                        ng-model="newBranch.branch_service_type"
+                        ng-maxlength="64"
+                        required>
+                  <option value="Data">Data</option>
+                  <option value="Internet">Internet</option>
+                  <option value="SMS">SMS</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-ip">IP *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-ip"
+                       placeholder="IP"
+                       ng-model="newBranch.branch_ip"
+                       ng-pattern="/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-access-type">Access Type</label>
+                <select class="form-control"
+                        id="branch-access-type"
+                        ng-model="newBranch.branch_access_type"
+                        ng-maxlength="64"
+                        required>
+                  <option value="ADSL">ADSL</option>
+                  <option value="AIRONET">AIRONET</option>
+                  <option value="Fiber">Fiber</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-service-number">Service Number *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-service-number"
+                       placeholder="Service Number"
+                       ng-model="newBranch.branch_service_number"
+                       ng-pattern="/^[0-9]{6,32}$/"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-bandwidth">Bandwidth</label>
+                <select class="form-control"
+                        id="branch-bandwidth"
+                        ng-model="newBranch.branch_bandwidth"
+                        ng-maxlength="16"
+                        required>
+                  <option value="512 Kbps">512 Kbps</option>
+                  <option value="1 Mbps">1 Mbps</option>
+                  <option value="2 Mbps">2 Mbps</option>
+                  <option value="3 Mbps">3 Mbps</option>
+                  <option value="4 Mbps">4 Mbps</option>
+                  <option value="8 Mbps">8 Mbps</option>
+                  <option value="15 Mbps">15 Mbps</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="newBranchForm.$invalid">Save</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- edit branch -->
+<div class="modal fade" id="edit-branch-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal">&times;</button>
+        <p class="modal-title">Edit Branch</p>
+      </div>
+
+      <div class="modal-body">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="editBranchForm"
+              autocomplete="off"
+              ng-submit="pinguCtrl.editBranchSubmit()">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-name">Name *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-name"
+                       placeholder="Name"
+                       ng-model="branch10_4.branch_name"
+                       ng-maxlength="128"
+                       ng-minlength="2"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-service-type">Service Type</label>
+                <select class="form-control"
+                        id="branch-service-type"
+                        ng-model="branch10_4.branch_service_type"
+                        ng-maxlength="64"
+                        required>
+                  <option value="Data">Data</option>
+                  <option value="Internet">Internet</option>
+                  <option value="SMS">SMS</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-ip">IP *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-ip"
+                       placeholder="IP"
+                       ng-model="branch10_4.branch_ip"
+                       ng-pattern="/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-access-type">Access Type</label>
+                <select class="form-control"
+                        id="branch-access-type"
+                        ng-model="branch10_4.branch_access_type"
+                        ng-maxlength="64"
+                        required>
+                  <option value="ADSL">ADSL</option>
+                  <option value="AIRONET">AIRONET</option>
+                  <option value="Fiber">Fiber</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-service-number">Service Number *</label>
+                <input type="text"
+                       class="form-control"
+                       id="branch-service-number"
+                       placeholder="Service Number"
+                       ng-model="branch10_4.branch_service_number"
+                       ng-pattern="/^[0-9]{6,32}$/"
+                       required>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <label for="branch-bandwidth">Bandwidth</label>
+                <select class="form-control"
+                        id="branch-bandwidth"
+                        ng-model="branch10_4.branch_bandwidth"
+                        ng-maxlength="16"
+                        required>
+                  <option value="512 Kbps">512 Kbps</option>
+                  <option value="1 Mbps">1 Mbps</option>
+                  <option value="2 Mbps">2 Mbps</option>
+                  <option value="3 Mbps">3 Mbps</option>
+                  <option value="4 Mbps">4 Mbps</option>
+                  <option value="8 Mbps">8 Mbps</option>
+                  <option value="15 Mbps">15 Mbps</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="editBranchForm.$invalid">Update</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-danger"
+                        ng-swipe-right="pinguCtrl.deleteBranchSubmit()">Delete</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- black hawk down -->
+<div class="modal fade" id="black-hawk-down" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <p class="modal-title">Black Hawk Down</p>
+      </div>
+
+      <div class="modal-body text-center">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="bhdForm"
+              autocomplete="off"
+              ng-submit="pinguCtrl.report()">
+
+          <div class="form-group">
+            <p class="branch-name" ng-bind="branch10_4.branch_name"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-ip" ng-bind="branch10_4.branch_ip"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-service-number" ng-bind="branch10_4.branch_service_number | split"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-misc">
+              <span ng-bind="branch10_4.branch_service_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="branch10_4.branch_access_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="branch10_4.branch_bandwidth"></span>
+            </p>
+          </div>
+
+          <div class="checkbox text-center">
+            <label>
+              <input class="report-alert" type="checkbox" ng-model="report.alert">Alert
+            </label>
+          </div>
+
+          <div class="form-group text-left">
+            <label for="report-ticket-number">Ticket Number</label>
+            <input type="text"
+                   class="form-control input-lg report-ticket-number"
+                   placeholder="Ticket Number"
+                   ng-model="report.ticket"
+                   ng-pattern="/^[0-9]{15}$/"
+                   style="font-size: 24px;"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="bhdForm.$invalid">Report</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- edit report -->
+<div class="modal fade" id="edit-report-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal">&times;</button>
+        <p class="modal-title">Edit Report</p>
+      </div>
+
+      <div class="modal-body text-center">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="editReportForm"
+              autocomplete="off"
+              ng-submit="pinguCtrl.editReportsubmit()">
+
+          <div class="form-group">
+            <p class="branch-name" ng-bind="report10_4.branch.branch_name"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-ip" ng-bind="report10_4.branch.branch_ip"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-service-number" ng-bind="report10_4.branch.branch_service_number | split"></p>
+          </div>
+
+          <div class="form-group">
+            <p class="branch-misc">
+              <span ng-bind="report10_4.branch.branch_service_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="report10_4.branch.branch_access_type"></span>&nbsp;-&nbsp;
+              <span ng-bind="report10_4.branch.branch_bandwidth"></span>
+            </p>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-offset-1 col-md-offset-1 col-lg-5 col-md-5">
+              <div class="checkbox text-center">
+                <label>
+                  <input class="report-alert" type="checkbox" ng-model="report10_4.report_alert">Alert
+                </label>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-5">
+              <div class="checkbox text-center">
+                <label>
+                  <input class="report-alert" type="checkbox" ng-model="report10_4.report_status">Closed
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group text-left">
+            <label for="report-ticket-number">Ticket Number</label>
+            <input type="text"
+                   class="form-control input-lg report-ticket-number"
+                   placeholder="Ticket Number"
+                   ng-model="report10_4.report_ticket"
+                   ng-pattern="/^[0-9]{15}$/"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="editReportForm.$invalid">Update</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-danger"
+                        ng-swipe-right="pinguCtrl.deleteReportSubmit()">Delete</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>

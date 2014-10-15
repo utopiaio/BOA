@@ -1,0 +1,241 @@
+<!-- not that many tgas will exist here, though still more than what i like to see -->
+
+
+<div class="col-lg-12 col-md-12">
+
+  <div class="row">
+    <div class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6">
+      <div class="search-ion">
+        <input
+          class="input-lg form-control"
+          type="text"
+          placeholder="Search"
+          ng-model="qsearch"
+        >
+        <i class="ion-ios7-search-strong text-muted"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-offset-3 col-md-offset-3 col-lg-6 col-md-6 user-container">
+      <h4 class="text-muted text-center ngShowHide"
+          ng-show="(users | filter:qsearch).length === 0">
+        nothing matching "<span ng-bind="qsearch"></span>"
+      </h4>
+
+      <ul class="list-group moe-list">
+        <li ng-repeat="user in users | orderBy:'user_username' | filter:qsearch" class="list-group-item ngRepeat moe-item">
+          <p class="name" ng-bind="user.user_username"></p>
+          <p class="misc">
+            <span ng-bind="user.user_access_type"></span>
+          </p>
+          <p class="status">
+            <i ng-if="user.user_suspended === false" class="text-success ion-ios7-checkmark-outline"></i>
+            <i ng-if="user.user_suspended === true" class="text-danger ion-ios7-close-outline"></i>
+          </p>
+
+          <div class="btn-group-vertical moe-pop">
+            <button type="button" class="btn btn-default" title="Edit" ng-click="usersCtrl.editUser(user)">
+              <i class="ion-ios7-information-outline"></i>
+            </button>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- new branch -->
+<div class="modal fade" id="new-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <p class="modal-title">New User</p>
+      </div>
+
+      <div class="modal-body">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="newUserForm"
+              autocomplete="off"
+              ng-submit="usersCtrl.newUserSubmit()">
+
+          <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   placeholder="Username"
+                   ng-model="newUser.user_username"
+                   ng-maxlength="128"
+                   ng-minlength="2"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   placeholder="Password"
+                   ng-model="newUser.user_password"
+                   ng-minlength="3"
+                   required>
+          </div>
+
+          <div class="form-group">
+            <label for="access-type">Access Type</label>
+            <select class="form-control"
+                    id="access-type"
+                    ng-model="newUser.user_access_type"
+                    required>
+              <option value="ADMIN">Administrator</option>
+              <option value="NORMAL">Normal</option>
+            </select>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input class="user-suspended" type="checkbox" ng-model="newUser.user_suspended">Suspended
+            </label>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="newUserForm.$invalid">Save</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- edit user -->
+<div class="modal fade" id="edit-user-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-hidden="true">&times;</button>
+        <p class="modal-title">Edit User</p>
+      </div>
+
+      <div class="modal-body">
+        <p class="stuff-i-learned-from-GBOX title"></p>
+
+        <form role="form"
+              novalidate
+              name="editUserForm"
+              autocomplete="off"
+              ng-submit="usersCtrl.editUserSubmit()">
+
+          <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   placeholder="Username"
+                   ng-model="user10_4.user_username"
+                   ng-maxlength="128"
+                   ng-minlength="2"
+                   required>
+          </div>
+
+          <!--
+          password rest is left for YOU!
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   placeholder="Password"
+                   ng-model="user10_4.user_password"
+                   ng-minlength="3"
+                   required>
+          </div>
+          -->
+
+          <div class="form-group">
+            <label for="access-type">Access Type</label>
+            <select class="form-control"
+                    id="access-type"
+                    ng-model="user10_4.user_access_type"
+                    required>
+              <option value="ADMIN">Administrator</option>
+              <option value="NORMAL">Normal</option>
+            </select>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input class="user-suspended" type="checkbox" ng-model="user10_4.user_suspended">Suspended
+            </label>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="submit"
+                        class="btn btn-block btn-primary"
+                        ng-disabled="editUserForm.$invalid">Update</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-danger"
+                        ng-swipe-right="usersCtrl.deleteUserSubmit()">Delete</button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12 col-md-12">
+                <button type="button"
+                        class="btn btn-block btn-default"
+                        data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>

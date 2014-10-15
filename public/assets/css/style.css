@@ -1,0 +1,393 @@
+/* font: START ---------------------------------------------------------------*/
+@font-face {
+  font-family: 'ClearSans-Thin';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Thin.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'ClearSans-Light';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Light.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'ClearSans-Regular';
+  src: url(../fonts/clearsans/WOFF/ClearSans-Regular.woff) format('woff');
+}
+
+.ClearSans-Thin {
+  font-family: 'ClearSans-Thin';
+}
+
+.ClearSans-Light {
+  font-family: 'ClearSans-Light';
+}
+
+.ClearSans-Regular {
+  font-family: 'ClearSans-Regular';
+}
+/* font: END -----------------------------------------------------------------*/
+
+
+
+/* BS3 customization: START --------------------------------------------------*/
+@media(min-width: 768px) {
+  .container {
+    width: 1000px;
+  }
+
+  .modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .modal-title {
+    font-size: 24px;
+    margin: 0;
+    margin-top: -6px;
+    font-family: 'ClearSans-Thin';
+  }
+
+  label {
+    font-weight: normal;
+    font-family: 'ClearSans-Regular';
+    margin-bottom: 0;
+    color: #696969;
+    width: 100%;
+  }
+}
+
+@media(max-width: 768px) {
+}
+/* BS3 customization: END ----------------------------------------------------*/
+
+
+
+/* Angular.js: START ---------------------------------------------------------*/
+#ngView.ng-enter {
+  opacity: 0;
+  -moz-transition: opacity linear 0.8s;
+  -webkit-transition: opacity linear 0.8s;
+  -o-transition: opacity linear 0.8s;
+  -ms-transition: opacity linear 0.8s;
+  transition: opacity linear 0.8s;
+}
+
+#ngView.ng-enter.ng-enter-active {
+  opacity: 1.0;
+}
+
+.ngRepeat.ng-enter,
+.ngRepeat.ng-leave,
+.ngRepeat.ng-move {
+  position: relative;
+  -moz-transition: 0.3s linear all;
+  -webkit-transition: 0.3s linear all;
+  -o-transition: 0.3s linear all;
+  -ms-transition: 0.3s linear all;
+  transition: 0.3s linear all;
+}
+
+.ngRepeat.ng-enter {
+  opacity: 0;
+  -moz-transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+  -o-transform: rotateX(90deg);
+  -ms-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+}
+
+.ngRepeat.ng-enter.ng-enter-active {
+  opacity: 1;
+  -moz-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+
+.ngRepeat.ng-leave {
+  opacity: 1;
+  -moz-transform: rotateX(0deg);
+  -webkit-transform: rotateX(0deg);
+  -o-transform: rotateX(0deg);
+  -ms-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+
+.ngRepeat.ng-leave.ng-leave-active {
+  opacity: 0;
+  -moz-transform: rotateX(90deg);
+  -webkit-transform: rotateX(90deg);
+  -o-transform: rotateX(90deg);
+  -ms-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+}
+
+.ngRepeat.ng-move {
+  opacity: 0.5;
+}
+
+.ngRepeat.ng-move.ng-move-active {
+  opacity: 1;
+}
+
+.ngShowHide {
+  -moz-transition: all linear 0.3s;
+  -webkit-transition:all linear 0.3s;
+  transition:all linear 0.3s;
+  opacity: 1;
+}
+
+.ngShowHide.ng-hide-add,
+.ngShowHide.ng-hide-remove {
+  opacity: 1.0;
+  display: block!important;
+}
+
+.ngShowHide.ng-hide {
+  opacity: 0;
+}
+
+[ng\:cloak], [ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+/* Angular.js: END -----------------------------------------------------------*/
+
+
+
+/* Moe Style: START ----------------------------------------------------------*/
+body {
+  font-family: 'ClearSans-Light';
+  background-color: #fcfcfc;
+}
+
+.pingu {
+  width: 100px;
+  display: inline-block;
+  margin-top: 100px;
+}
+
+.search-ion {
+  position: relative;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.search-ion i {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 200%;
+}
+
+.branch-container,
+.report-container {
+  overflow-y: scroll;
+}
+
+.power {
+  margin-top: 100px;
+}
+
+.power a {
+  text-decoration: none;
+}
+
+.power img {
+  display: inline-block;
+  margin-left: 18px;
+  margin-right: 18px;
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.menu a,
+.menu button {
+  padding: 0;
+  padding: 0 18px;
+}
+
+.menu a.activex,
+.menu button.activex {
+  color: rgba(231, 76, 60, 0.75);
+}
+
+.menu i {
+  font-size: 38px;
+}
+
+.menu.btn-group-vertical > .btn:first-child:not(:last-child),
+.menu.btn-group-vertical > .btn:last-child:not(:first-child) {
+  border-radius: 0;
+}
+
+.moe-list p {
+  margin: 0;
+  margin-bottom: 6px;
+  line-height: 100%;
+}
+
+.moe-list .name,
+form[name="bhdForm"] .form-group p.branch-name,
+form[name="editReportForm"] .form-group p.branch-name {
+  font-size: 32px;
+  font-family: 'ClearSans-Regular';
+  color: rgba(52, 73, 94, 1.0);
+  text-transform: capitalize;
+}
+
+.moe-list .ip,
+form[name="bhdForm"] .form-group p.branch-ip,
+form[name="editReportForm"] .form-group p.branch-ip {
+  font-size: 32px;
+  color: rgba(192, 57, 43, 0.5);
+}
+
+.moe-list .service,
+form[name="bhdForm"] .form-group p.branch-service-number,
+form[name="editReportForm"] .form-group p.branch-service-number {
+  margin-bottom: 8px;
+  font-size: 52px;
+  color: rgba(127, 140, 141, 1.0);
+}
+
+.moe-list .misc,
+form[name="bhdForm"] .form-group p.branch-misc,
+form[name="editReportForm"] .form-group p.branch-misc {
+  margin-bottom: 0;
+  font-size: 16px;
+  color: rgba(149, 165, 166, 1.0);
+}
+
+.moe-list .ticket {
+  padding-top: 8px;
+  margin: 0;
+  font-size: 38px;
+  font-family: 'ClearSans-Regular';
+  color: rgba(127, 140, 141, 1.0);
+}
+
+.moe-list .status-reporter .reporter {
+  font-size: 18px;
+  text-transform: lowercase;
+  margin-bottom: 0;
+}
+
+.moe-list .status-reporter .status {
+  font-size: 32px;
+  position: absolute;
+  top: -12px;
+  left: 15px;
+  color: rgba(192, 57, 43, 1.0);
+}
+
+.moe-list .stuff-i-learned-from-GBOX {
+  margin: 0;
+  margin-top: 12px;
+}
+
+.moe-list .moe-item.open p.open,
+.moe-list .moe-item.closed p.open {
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.moe-list .moe-item.closed p.closed {
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.moe-list .moe-item {
+  position: relative;
+}
+
+.moe-list .status {
+  margin-top: 8px;
+  font-size: 32px;
+}
+
+.moe-list .moe-item .moe-pop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  -moz-transition:    opacity linear 0.3s;
+  -webkit-transition: opacity linear 0.3s;
+  -o-transition:      opacity linear 0.3s;
+  transition:         opacity linear 0.3s;
+}
+
+.moe-list .moe-item:hover .moe-pop {
+  opacity: 1;
+}
+
+.moe-list .moe-item.open {
+  background-color: rgba(192, 57, 43, 0.1);
+}
+
+.moe-list .moe-item.closed {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.moe-pop.btn-group-vertical .btn {
+  padding: 0 12px;
+  border-radius: 0;
+  font-size: 32px;
+}
+
+.stuff-i-learned-from-GBOX {
+  border-bottom: 1px solid rgba(254, 254, 254, 1);
+  border-top: 1px solid rgba(224, 224, 224, 1);
+  height: 0;
+  margin: 0;
+}
+
+.stuff-i-learned-from-GBOX.title {
+  margin-top: -32px;
+  margin-bottom: 24px;
+}
+
+.modal form button[type="submit"] {
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.modal form button.btn-danger {
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.ui-pnotify .ui-pnotify-text button {
+  margin-top: 8px;
+}
+
+.form-control.input-lg.report-ticket-number {
+  font-size: 24px;
+}
+
+form[name="bhdForm"] .form-group p,
+form[name="editReportForm"] .form-group p {
+  margin: 0;
+  line-height: 100%;
+}
+
+form[name="bhdForm"] .checkbox label,
+form[name="editReportForm"] .checkbox label,
+form[name="newUserForm"] .checkbox label {
+  font-size: 24px;
+  color: rgba(192, 57, 43, 0.75);
+}
+
+form[name="bhdForm"] .checkbox input.report-alert,
+form[name="editReportForm"] .checkbox input.report-alert,
+form[name="newUserForm"] .checkbox input.user-suspended {
+  margin-top: 16px;
+}
+/* Moe Style: END ------------------------------------------------------------*/
