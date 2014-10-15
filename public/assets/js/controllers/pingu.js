@@ -153,7 +153,7 @@ var pinguCtrl = app.controller('pinguCtrl', ['$rootScope', '$scope', '$http', '$
   this.newBranchsubmit = function () {
     $http.post('api/branches', $scope.newBranch).success(function (data, status, headers, config) {
       $scope.branches.push(data.newBranch);
-      $('#new-branch-modal').modal('hide');
+      $('#new-modal').modal('hide');
       $scope.newBranch = {
         branch_name:            '',
         branch_ip:              '',
