@@ -1,5 +1,5 @@
 ##Pingu
-![Preview](public/assets/images/preview.png)
+![Pingu](public/assets/images/preview.jpg)
 
 a simple follow-up system for BOA's network
 
