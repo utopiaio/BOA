@@ -597,7 +597,7 @@ app.post('/api/ping', function (request, response, next) {
     switch(request.body.mode) {
       // we're just going to ping the shit out the IP that's sent to use
       case 'PING_BRANCH':
-        pingu.ping({c: 2, timeout: 4}, request.body.ip, function (result) {
+        pingu.ping({c: 2, timeout: 2}, request.body.ip, function (result) {
           if (result.loss === 100) {
             // broadcasting to ERYbody
             // we need all hands on deck --- so to speak
@@ -632,7 +632,7 @@ app.post('/api/ping', function (request, response, next) {
       // launching the modal we either close the report or notify that it's
       // still down
       case 'PING_REPORT':
-        pingu.ping({c: 2, timeout: 4}, request.body.ip, function (result) {
+        pingu.ping({c: 2, timeout: 2}, request.body.ip, function (result) {
           if (result.loss === 100) {
             // the branch is still down
             io.sockets.connected[sockets[request.session.username].id].emit('message', {
