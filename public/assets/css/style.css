@@ -76,59 +76,19 @@
   opacity: 1.0;
 }
 
-.ngRepeat.ng-enter,
-.ngRepeat.ng-leave,
-.ngRepeat.ng-move {
-  position: relative;
-  -moz-transition: 0.3s linear all;
-  -webkit-transition: 0.3s linear all;
-  -o-transition: 0.3s linear all;
-  -ms-transition: 0.3s linear all;
-  transition: 0.3s linear all;
-}
-
 .ngRepeat.ng-enter {
-  opacity: 0;
-  -moz-transform: rotateX(90deg);
-  -webkit-transform: rotateX(90deg);
-  -o-transform: rotateX(90deg);
-  -ms-transform: rotateX(90deg);
-  transform: rotateX(90deg);
-}
-
-.ngRepeat.ng-enter.ng-enter-active {
-  opacity: 1;
-  -moz-transform: rotateX(0deg);
-  -webkit-transform: rotateX(0deg);
-  -o-transform: rotateX(0deg);
-  -ms-transform: rotateX(0deg);
-  transform: rotateX(0deg);
+  -webkit-animation: 0.5s flipInX;
+  animation: 0.5s flipInX;
 }
 
 .ngRepeat.ng-leave {
-  opacity: 1;
-  -moz-transform: rotateX(0deg);
-  -webkit-transform: rotateX(0deg);
-  -o-transform: rotateX(0deg);
-  -ms-transform: rotateX(0deg);
-  transform: rotateX(0deg);
-}
-
-.ngRepeat.ng-leave.ng-leave-active {
-  opacity: 0;
-  -moz-transform: rotateX(90deg);
-  -webkit-transform: rotateX(90deg);
-  -o-transform: rotateX(90deg);
-  -ms-transform: rotateX(90deg);
-  transform: rotateX(90deg);
+  -webkit-animation: 0.5s flipOutX;
+  animation: 0.5s flipOutX;
 }
 
 .ngRepeat.ng-move {
-  opacity: 0.5;
-}
-
-.ngRepeat.ng-move.ng-move-active {
-  opacity: 1;
+  -webkit-animation: 0.5s flipOutX;
+  animation: 0.5s flipOutX;
 }
 
 .ngShowHide {
