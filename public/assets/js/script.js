@@ -2,7 +2,7 @@
  * this is a "helper" function for PNotify
  *
  */
-function iPNotify (option) {
+function iPNotify(option) {
   var pn = new PNotify({
     type: option.type === undefined ? 'success' : option.type,
     text: option.text,

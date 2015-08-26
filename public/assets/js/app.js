@@ -2,29 +2,29 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSplit']);
 
 
 
-app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootScope, $interval, $http) {
+app.controller('appCtrl', ['$rootScope', '$interval', '$http', function($rootScope, $interval, $http) {
   $rootScope.io = null;
   $rootScope.ageUpdate = null;
 
-  $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+  $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
     console.error(rejection);
   });
 
-  $rootScope.$on('$routeChangeStart', function (event, target) {
+  $rootScope.$on('$routeChangeStart', function(event, target) {
   });
 
-  $rootScope.$on('$routeChangeSuccess', function (event, target) {
+  $rootScope.$on('$routeChangeSuccess', function(event, target) {
   });
 
   // this function will be called to kill the $interval that is used in reports
-  $rootScope.$on('PAUSE', function (event, data) {
+  $rootScope.$on('PAUSE', function(event, data) {
     if ($rootScope.ageUpdate !== null) {
       $interval.cancel($rootScope.ageUpdate);
       $rootScope.ageUpdate = null;
     }
   });
 
-  $rootScope.connect = function () {
+  $rootScope.connect = function() {
     // we will only establish connection once
     // after that socket.io engine will go to the end of earth to reconnect
     // we just sit back and enjoy the ride
@@ -37,7 +37,7 @@ app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootSc
       });
       */
 
-      $rootScope.io.on('message', function (data) {
+      $rootScope.io.on('message', function(data) {
         if (data.notify !== undefined) {
           iPNotify(data.notify);
         }
@@ -107,7 +107,7 @@ app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootSc
       });
 
       // all errors are treated as suspicious --- i do NOT trust you son!
-      $rootScope.io.on('error', function (data) {
+      $rootScope.io.on('error', function(data) {
         iPNotify({text: 'umm, what\'s up Doc?', type: 'error'});
       });
     }
@@ -115,14 +115,17 @@ app.controller('appCtrl', ['$rootScope', '$interval', '$http', function ($rootSc
 
   // binding to couple of DOM events, menu to be exact
   // using activex class to avoid "collision" with bootstrap
-  $('.menu a, .menu button').click(function (e) {
+  $('.menu a, .menu button').click(function(e) {
     $('.menu a, .menu button').removeClass('activex');
     $(this).addClass('activex');
   });
 
-  this.logout = function () {
-    $http.delete('/api/login/delete');
-    location.reload();
+  this.logout = function() {
+    $http
+      .delete('/api/login/delete')
+      .success(function() {
+        location.reload();
+      });
   };
 
   $rootScope.appCtrl = this;
@@ -143,15 +146,15 @@ app.config(function($sceDelegateProvider) {
 // we're going to intercept request and look out for anything suspicious
 // meaning: we're going to look for property 'notify' and call `iPNotify`
 // that's pretty much it --- talk about overkill :)
-app.config(function ($routeProvider, $httpProvider, $locationProvider) {
-  $httpProvider.interceptors.push(function ($rootScope, $q) {
+app.config(function($routeProvider, $httpProvider, $locationProvider) {
+  $httpProvider.interceptors.push(function($rootScope, $q) {
     return {
-     'request': function(config) {
+     request: function(config) {
         $rootScope.httpInProgress = true;
         return config;
       },
 
-      'response': function(response) {
+      response: function(response) {
         $rootScope.httpInProgress = false;
         if (response.data.notify !== undefined) {
           iPNotify(response.data.notify)
@@ -160,7 +163,7 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
         return response;
       },
 
-      'responseError': function (rejection) {
+      responseError: function(rejection) {
         $rootScope.httpInProgress = false;
 
         if (rejection.data.notify !== undefined) {
@@ -172,43 +175,39 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
     };
   });
 
-  $routeProvider.when('/', {
-    templateUrl: 'templates/pingu.html',
-    controller: 'pinguCtrl',
-    resolve: {
-      socket:   pinguCtrl.socket,
-      branches: pinguCtrl.branches,
-      reports:  pinguCtrl.reports
-    }
-  }).
-
-  when('/login', {
-    templateUrl: 'templates/login.html',
-    controller: 'loginCtrl'
-  }).
-
-  when('/stat', {
-    templateUrl: 'templates/stat.html',
-    controller: 'statCtrl'
-  }).
-
-  when('/users', {
-    templateUrl: 'templates/users.html',
-    controller: 'usersCtrl',
-    resolve: {
-      socket: pinguCtrl.socket,
-      users: usersCtrl.users
-    }
-  }).
-
-  when('/log', {
-    templateUrl: 'templates/log.html',
-    controller: 'logCtrl'
-  }).
-
-  otherwise({
-    redirectTo: '/login'
-  });
+  $routeProvider
+    .when('/', {
+      templateUrl: 'templates/pingu.html',
+      controller: 'pinguCtrl',
+      resolve: {
+        socket: pinguCtrl.socket,
+        branches: pinguCtrl.branches,
+        reports: pinguCtrl.reports
+      }
+    })
+    .when('/login', {
+      templateUrl: 'templates/login.html',
+      controller: 'loginCtrl'
+    })
+    .when('/stat', {
+      templateUrl: 'templates/stat.html',
+      controller: 'statCtrl'
+    })
+    when('/users', {
+      templateUrl: 'templates/users.html',
+      controller: 'usersCtrl',
+      resolve: {
+        socket: pinguCtrl.socket,
+        users: usersCtrl.users
+      }
+    })
+    .when('/log', {
+      templateUrl: 'templates/log.html',
+      controller: 'logCtrl'
+    })
+    .otherwise({
+      redirectTo: '/login'
+    });
 
   $locationProvider.html5Mode(true);
 });
