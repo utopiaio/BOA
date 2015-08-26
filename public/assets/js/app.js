@@ -193,7 +193,7 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
       templateUrl: 'templates/stat.html',
       controller: 'statCtrl'
     })
-    when('/users', {
+    .when('/users', {
       templateUrl: 'templates/users.html',
       controller: 'usersCtrl',
       resolve: {
