@@ -9,7 +9,7 @@
    * then you have yourself a clean code ;)
    */
 
-  var https = require('https');
+  var http = require('http');
   var path = require('path');
   var fs = require('fs');
   var express = require('express');
@@ -46,7 +46,7 @@
     secret: config.cookieSignature,
     cookie: {
       maxAge: 604800000,
-      secure: true,
+      secure: false,
       httpOnly: true
     },
     rolling: true,
@@ -702,7 +702,7 @@
 
 
 
-  var server = https.createServer(config.https, app);
+  var server = http.createServer(app);
   server.listen(app.get('port'), '127.0.0.1');
 
 
