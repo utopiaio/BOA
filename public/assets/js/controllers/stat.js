@@ -10,5 +10,10 @@
   function StatController($scope, $http) {
     $scope.$emit('PAUSE');
     var vm = this;
+
+    vm.range = {
+      to: '',
+      from: ''
+    };
   };
 })(window.angular);

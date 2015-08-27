@@ -1,14 +1,25 @@
 <div class="col-lg-12 col-md-12">
-  <br>
-  <h3 class="ClearSans-Thin">this is where all the pretty graphs and statics will go</h3>
-  <br>
-  <span>lost of things can be added here</span>
-  <ul>
-    <li>overall weekly, monthly, yearly report of branch up/down time (with graph)</li>
-    <li>which branches fail more often (EV-DO request can be verified using the stats)</li>
-    <li>also, automatic pinger can be added...</li>
-    <li>YOU can add lots of stuff here :)</li>
-  </ul>
+  <p>&nbsp;</p>
 
-  <h1 class="ClearSans-Thin"><small>most importantly,</small> HAVE FUN!</h1>
+  <div class="row">
+    <div class="col-lg-offset-2 col-lg-3">
+      <calendar ng-model="stat.range.from" data-mode="date"></calendar>
+    </div>
+
+    <div class="col-lg-3">
+      <calendar ng-model="stat.range.to" data-mode="date"></calendar>
+    </div>
+
+    <div class="col-lg-2">
+      <button class="btn btn-primary btn-block">search</button>
+    </div>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-lg-offset-3 col-lg-6">
+      <pre>{{ stat.range | json }}</pre>
+    </div>
+  </div>
 </div>
