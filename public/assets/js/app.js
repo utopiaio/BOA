@@ -191,7 +191,8 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
     })
     .when('/stat', {
       templateUrl: 'templates/stat.html',
-      controller: 'statCtrl'
+      controller: 'StatController',
+      controllerAs: 'stat'
     })
     .when('/users', {
       templateUrl: 'templates/users.html',
@@ -203,7 +204,8 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
     })
     .when('/log', {
       templateUrl: 'templates/log.html',
-      controller: 'logCtrl'
+      controller: 'LogController',
+      controllerAs: 'log'
     })
     .otherwise({
       redirectTo: '/login'
