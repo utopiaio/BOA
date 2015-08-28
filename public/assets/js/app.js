@@ -192,7 +192,10 @@ app.config(function($routeProvider, $httpProvider, $locationProvider) {
     .when('/stat', {
       templateUrl: 'templates/stat.html',
       controller: 'StatController',
-      controllerAs: 'stat'
+      controllerAs: 'stat',
+      resolve: {
+        branches: pinguCtrl.branches
+      }
     })
     .when('/users', {
       templateUrl: 'templates/users.html',

@@ -2,16 +2,23 @@
   <p>&nbsp;</p>
 
   <div class="row">
-    <div class="col-lg-offset-2 col-lg-3">
-      <calendar ng-model="stat.range.from" data-mode="date"></calendar>
+    <div class="col-lg-offset-1 col-lg-3">
+      <select class="form-control" ng-model="stat.query.branch">
+        <option ng-value="-1" ng-selected="true">All</option>
+        <option ng-repeat="branch in stat.branches" ng-value="branch.branch_id" ng-bind="branch.branch_name"></option>
+      </select>
     </div>
 
     <div class="col-lg-3">
-      <calendar ng-model="stat.range.to" data-mode="date"></calendar>
+      <calendar ng-model="stat.query.range.from" data-mode="date"></calendar>
+    </div>
+
+    <div class="col-lg-3">
+      <calendar ng-model="stat.query.range.to" data-mode="date"></calendar>
     </div>
 
     <div class="col-lg-2">
-      <button class="btn btn-primary btn-block">search</button>
+      <button class="btn btn-primary btn-block" ng-click="stat.search()">search</button>
     </div>
   </div>
 
@@ -19,7 +26,39 @@
 
   <div class="row">
     <div class="col-lg-offset-3 col-lg-6">
-      <pre>{{ stat.range | json }}</pre>
+      <ul class="list-group moe-list">
+        <li ng-repeat="report in stat.reports | orderBy:'report_id':true" class="list-group-item ngRepeat moe-item" ng-class="{open: report.report_status === false, closed: report.report_status === true}">
+          <p class="name" ng-bind="report.branch.branch_name"></p>
+          <p class="ip" ng-bind="report.branch.branch_ip"></p>
+          <p class="service" ng-bind="report.branch.branch_service_number | split"></p>
+          <p class="misc">
+            <span ng-bind="report.branch.branch_service_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_access_type"></span>
+            &nbsp;-&nbsp;
+            <span ng-bind="report.branch.branch_bandwidth"></span>
+          </p>
+
+          <p class="stuff-i-learned-from-GBOX"></p>
+          <p class="ticket" ng-bind="report.report_ticket | split"></p>
+          <p class="open">
+            <span ng-bind="report.age.open.pretty"></span>&nbsp;(<span ng-bind="report.age.open.age"></span>)
+          </p>
+          <p class="closed" ng-if="report.report_status === true">
+            <span ng-bind="report.age.closed.pretty"></span>&nbsp;(<span ng-bind="report.age.closed.age"></span>)
+          </p>
+
+          <div class="row status-reporter">
+            <div class="col-lg-6 col-md-6 text-left">
+              <i class="status" ng-class="{'ion-alert-circled': report.report_alert === true}"></i>
+            </div>
+
+            <div class="col-lg-6 col-md-6 text-right">
+              <span class="reporter" ng-bind="report.report_reporter"></span>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
