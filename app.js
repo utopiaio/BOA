@@ -20,13 +20,20 @@
   var serveFavicon = require('serve-favicon');
   var pg = require('pg');
   var socket = require('socket.io');
-  var sessionStore = require('sessionstore').createSessionStore(); // Memory
+  var connectPgSimple = require('connect-pg-simple');
   var socketHandshake = require('socket.io-handshake');
 
   // home brewed by Moe Szyslak :)
   var pingu = require('./lib/pingu.js');
   var sha1 = require('./lib/cyper.js');
   var config = require('./config.js');
+
+
+  // PG Session store
+  var pgStore = new(connectPgSimple(expressSession))({
+    pg: pg,
+    conString: process.env.DATABASE_URL || config.pgConnectionString
+  });
 
   // sockets is where we're going to keep all those sockets that are connected
   // {username: socket}
@@ -42,7 +49,7 @@
   app.use(express.static(path.join(__dirname, '/public')));
   app.use(expressSession({
     name: 'pingu',
-    store: sessionStore,
+    store: pgStore,
     secret: config.cookieSignature,
     cookie: {
       maxAge: 604800000,
@@ -145,6 +152,38 @@
           type: 'error'
         }
       });
+    }
+  });
+
+
+
+  app.use('/api/search', function(request, response, next) {
+    switch(request.method) {
+      case 'POST':
+        if(request.body.branch === "-1") {
+          client.query('SELECT report_id, report_timestamp_open, report_alert, report_branch, report_ticket, report_timestamp_close, report_status, report_reporter FROM reports WHERE report_timestamp_open >= $1 AND report_timestamp_open <= $2;', [request.body.range.from, request.body.range.to], function(error, result) {
+            response.status(202);
+            response.json(result.rows);
+          });
+        }
+
+        else {
+          client.query('SELECT report_id, report_timestamp_open, report_alert, report_branch, report_ticket, report_timestamp_close, report_status, report_reporter FROM reports WHERE report_timestamp_open >= $1 AND report_timestamp_open <= $2 AND report_branch = $3;', [request.body.range.from, request.body.range.to, request.body.branch], function(error, result) {
+            response.status(202);
+            response.json(result.rows);
+          });
+        }
+      break;
+
+      default:
+        response.status(405);
+        response.json({
+          notify: {
+            text: 'am snitching!',
+            type: 'error'
+          }
+        });
+      break;
     }
   });
 
@@ -709,7 +748,7 @@
 
   var io = socket(server);
   io.use(socketHandshake({
-    store: sessionStore,
+    store: pgStore,
     key: 'pingu',
     secret: config.cookieSignature,
     parser: cookieParser()
